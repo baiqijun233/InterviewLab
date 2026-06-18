@@ -1,33 +1,93 @@
 # InterviewLab
 
+An AI-powered technical interview practice platform built with FastAPI, Next.js, LangGraph, and LiveKit.
+
+This repository is presented as a portfolio project: it combines real-time interview orchestration, voice interaction, live coding, resume-aware prompts, and structured feedback in one product-shaped system.
+
 <div align="center">
-  <img src="frontend/public/landing-page.png" alt="Landing Page" width="100%"/>
+  <img src="frontend/public/landing-page.png" alt="InterviewLab landing page" width="100%"/>
   <br/><br/>
-  <img src="frontend/public/interview.png" alt="Interview Interface" width="100%"/>
+  <img src="frontend/public/interview.png" alt="Interview interface" width="100%"/>
   <br/><br/>
-  <img src="frontend/public/resumes.png" alt="Resumes Page" width="100%"/>
+  <img src="frontend/public/resumes.png" alt="Resume analysis page" width="100%"/>
 </div>
 
-**Problem:** Traditional technical interview practice often lacks realism, immediate feedback, and interactive voice-based engagement.
+## Portfolio Summary
 
-**Solution:** InterviewLab delivers AI-driven technical interviews using real-time voice conversations, live code execution, and in-depth feedback, powered by LangGraph and LiveKit.
+**Problem**
+
+Most interview prep tools are either static question banks or chat-only demos. They usually miss three things that make practice feel realistic:
+
+- real interview flow control
+- voice-based interaction
+- structured feedback tied to both answers and coding performance
+
+**What this project does**
+
+InterviewLab simulates a technical interview workflow with:
+
+- AI-guided interview progression
+- voice interview infrastructure
+- live code execution in a sandbox
+- resume-based personalization
+- skill breakdown and feedback analytics
+
+**Why it is a strong portfolio piece**
+
+This project is not just a UI demo. It shows:
+
+- multi-service system design
+- backend orchestration with stateful interview flow
+- real-time interaction architecture
+- frontend product thinking
+- fallback design for missing external services
+- practical debugging and local validation work
 
 ---
 
-**Python** `3.11+` **TypeScript** `5.0+` **LangGraph** `0.0.40+` **LiveKit** `0.11.0+` **OpenAI** `1.0.0+` **License** `GNU` **Status** `Portfolio-Project`
+## What I Changed
 
-Portfolio Project — Production-ready codebase demonstrating AI system architecture.
+This repository started from the original InterviewLab codebase and was adapted into a more interview-ready, locally demonstrable portfolio project.
 
-## Aim
+### Key improvements
 
-Provide candidates with realistic interview practice through:
+1. **Repaired missing frontend foundation**
+   - Added missing frontend utility and API client modules under `frontend/lib/`
+   - Restored auth store, API wrappers, and shared helpers needed for the app to build and run
 
-- **Natural voice conversations** with AI interviewer
-- **Live code execution** in isolated sandbox
-- **Comprehensive feedback** on communication, technical knowledge, problem-solving, and code quality
-- **Resume-based questions** tailored to candidate background
+2. **Added local mock interview validation flow**
+   - Introduced `LOCAL_MOCK_AI` to allow local end-to-end testing without a live OpenAI pipeline
+   - Added mock response and feedback behavior so the interview lifecycle can still be demonstrated
+   - Made it possible to validate the main product flow even when external AI services are unavailable
 
-## High-Level Architecture
+3. **Localized the user-facing product UI**
+   - Converted the main user flows to Chinese for presentation and usability
+   - Updated landing page, auth pages, dashboard, interview views, resume views, analytics labels, sandbox UI, and metadata assets
+
+4. **Improved portfolio presentation**
+   - Reframed the project around product value, architecture, validation status, and demo flow
+   - Organized the repository so it is easier to explain in an interview setting
+
+---
+
+## Demo Flow
+
+The most reliable demo path today is:
+
+1. Register or sign in
+2. Upload a resume
+3. Create an interview session
+4. Start the interview
+5. Submit a text response
+6. Continue through the mock interview loop
+7. Complete the interview
+8. Open feedback and skill breakdown views
+
+This gives a stable walkthrough of the core product experience without requiring every external production dependency to be live.
+
+---
+
+## Architecture
 
 ```mermaid
 graph TB
@@ -49,13 +109,13 @@ graph TB
 
     subgraph Services
         SB[Docker Sandbox]
-        LLM[GPT-4o-mini]
+        LLM[OpenAI Model]
         DB[PostgreSQL]
         REDIS[Redis Cache]
     end
 
     FE -->|HTTP REST| API
-    FE -->|WebSocket| LK
+    FE -->|Realtime| LK
     API -->|HTTP| LK
     API -->|SQL| DB
     API -->|Cache| REDIS
@@ -67,165 +127,187 @@ graph TB
     AGENT -->|API| STT
 ```
 
-### Core Components
+### Core components
 
-| Component        | Technology     | Purpose                               |
-| ---------------- | -------------- | ------------------------------------- |
-| **Orchestrator** | LangGraph      | State machine managing interview flow |
-| **Agent**        | LiveKit Agents | Real-time voice agent (STT/TTS)       |
-| **LLM**          | GPT-4o-mini    | Question generation, decision making  |
-| **Sandbox**      | Docker         | Isolated code execution               |
-| **Database**     | PostgreSQL     | Interview state, checkpoints          |
-| **Cache**        | Redis          | State caching, session management     |
+| Component | Technology | Responsibility |
+| --- | --- | --- |
+| Frontend | Next.js + React | Product UI, interview dashboard, resumes, analytics, live coding |
+| API Layer | FastAPI | Auth, interviews, resumes, voice, sandbox, analytics endpoints |
+| Orchestrator | LangGraph | Stateful interview flow, decisions, transitions, response generation |
+| Voice Agent | LiveKit Agents | Real-time voice interview interaction |
+| LLM Layer | OpenAI | Interview prompts, follow-ups, evaluation, feedback generation |
+| Sandbox | Docker | Isolated code execution |
+| Database | PostgreSQL / SQLite for local smoke flow | Persistence for interviews and related entities |
+| Cache / Session Layer | Redis | Runtime coordination and caching in full deployment |
 
-## How It Works
+---
 
-### Interview Flow
+## Technical Highlights
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant F as Frontend
-    participant A as API
-    participant LK as LiveKit
-    participant AG as Agent
-    participant O as Orchestrator
-    participant LLM as GPT-4o-mini
+### 1. Stateful interview orchestration
 
-    U->>F: Start Interview
-    F->>A: POST interviews
-    A->>LK: Create Room
-    F->>LK: Connect WebSocket
-    LK->>AG: Bootstrap Agent
-    AG->>O: Initialize
-    O->>LLM: Generate Greeting
-    LLM->>O: Response
-    O->>AG: next_message
-    AG->>LK: TTS Audio
-    LK->>U: Hear Greeting
+The interview is not treated like a simple chatbot. LangGraph is used to manage phase transitions such as greeting, questioning, follow-up behavior, coding, and closing.
 
-    loop Conversation
-        U->>LK: Speak
-        LK->>AG: STT Text
-        AG->>O: execute_step
-        O->>LLM: Detect Intent
-        O->>LLM: Decide Next Action
-        O->>LLM: Generate Response
-        O->>AG: Response
-        AG->>U: TTS Audio
-    end
-```
+### 2. Voice-first product direction
 
-### State Management
+The system is designed around voice interaction through LiveKit, including room setup, speech handling, and AI agent participation.
 
-- **LangGraph MemorySaver**: In-memory state per interview (`thread_id`)
-- **Database Checkpoints**: Persistent state after each turn
-- **Reducers**: Append-only fields (conversation_history, questions_asked)
-- **Single Writer**: Critical fields (next_message, phase) written by one node
+### 3. Live coding workflow
 
-## Current Performance
+The product includes a coding sandbox experience with editor, execution output, and interview-linked submission behavior.
 
-### Strengths
+### 4. Resume-aware interview context
 
-- ✅ **Real-time voice** with <3s latency
-- ✅ **State persistence** via checkpoints
-- ✅ **Concurrent interviews** (isolated by thread_id)
-- ✅ **Code execution** in isolated Docker containers
-- ✅ **Comprehensive feedback** with skill breakdowns
+Interview sessions can be connected to uploaded resumes so the product can personalize prompts and discussion areas.
+
+### 5. Practical fallback engineering
+
+A major portfolio strength here is not only the intended architecture, but also the ability to keep the project demonstrable when external services are incomplete.
+
+---
+
+## Current Validation Status
+
+### Verified locally
+
+- frontend builds successfully in the main local workflow
+- backend health endpoint responds correctly
+- register / login / create interview / start / respond / complete flow works in local mock mode
+- feedback and skill breakdown endpoints return usable data in local validation mode
+- major user-facing pages were localized and browser-checked
+
+### Not fully validated yet in true production mode
+
+These parts depend on external infrastructure being available:
+
+- real OpenAI interview generation and scoring
+- LiveKit real-time voice room flow
+- Docker-isolated execution in full runtime conditions
+- PostgreSQL + Redis production-style persistence path
+
+That means the project is already strong as a portfolio system demo, while still having a clear roadmap for full production validation.
+
+---
+
+## Interview Talking Points
+
+If you are reviewing this project in an interview, the strongest discussion areas are:
+
+- how the interview state machine is modeled
+- how frontend and backend responsibilities are split
+- how to make an AI product demonstrable before every external dependency is ready
+- how mock mode reduces integration risk while preserving product validation
+- how voice, orchestration, sandbox execution, and analytics fit together in one application
+
+---
 
 ## Project Structure
 
-```
+```text
 InterviewLab/
-├── src/                    # Backend (Python/FastAPI)
-│   ├── agents/            # LiveKit agent logic
-│   ├── api/               # REST API implementation
-│   │   └── v1/
-│   │       └── endpoints/ # Endpoints for interviews, resumes, voice, sandbox
-│   ├── core/              # Configuration, database, and authentication utilities
-│   ├── models/            # Database models for core entities
-│   ├── schemas/           # Pydantic schemas for data validation
-│   └── services/          # Business logic and subsystems
-│       ├── analysis/      # Interview response and code analysis
-│       ├── analytics/     # Analytics functionality
-│       ├── data/          # Checkpointing and state management
-│       ├── execution/     # Secure code sandboxing
-│       ├── logging/       # Interview activity logging
-│       ├── orchestrator/  # State orchestration using LangGraph
-│       └── voice/         # LiveKit voice management
-├── frontend/              # Frontend (Next.js + React)
-│   ├── app/              # App routing and authentication
-│   ├── components/       # UI components (interview, analytics, UI kit)
-│   ├── lib/              # API client and store utilities
-│   └── hooks/            # Custom React hooks
-├── docs/                  # Documentation and guides
-├── alembic/               # Database migration scripts
-├── docker-compose.yml     # Local dev orchestration
-├── Dockerfile             # Production build configuration
-└── pyproject.toml         # Backend dependencies and settings
+├── src/                     # Backend application
+│   ├── agents/              # LiveKit agent logic
+│   ├── api/                 # REST API endpoints
+│   ├── core/                # Config, auth, database utilities
+│   ├── models/              # Database models
+│   ├── schemas/             # Validation schemas
+│   └── services/            # Orchestration, analysis, execution, analytics, voice
+├── frontend/                # Next.js application
+│   ├── app/                 # App routes
+│   ├── components/          # UI components
+│   ├── hooks/               # React hooks
+│   └── lib/                 # API clients, store, helpers
+├── docs/                    # Technical documentation
+├── alembic/                 # Database migrations
+├── docker-compose.yml       # Local service orchestration
+├── Dockerfile               # Backend image
+├── Dockerfile.agent         # Agent image
+└── pyproject.toml           # Python dependencies
 ```
 
-## Documentation
-
-- [Architecture](docs/ARCHITECTURE.md) - System architecture and component relationships
-- [API Reference](docs/API.md) - REST API endpoints
-- [Frontend](docs/FRONTEND.md) - Next.js frontend architecture and development
-- [Voice Infrastructure](docs/VOICE_INFRASTRUCTURE.md) - LiveKit setup and agent architecture
-- [User Guide](docs/USER_GUIDE.md) - How to use InterviewLab
-- [Local Development](docs/LOCAL_DEVELOPMENT.md) - Setup and development workflow
-- [LangGraph Guide](docs/LANGGRAPH.md) - State, nodes, and orchestration
-- [Deployment](docs/DEPLOYMENT.md) - Railway and Vercel deployment
-
-## Quick Start
-
-```bash
-# Backend
-cd src
-uvicorn main:app --reload
-
-# Frontend
-cd frontend
-npm install
-npm run dev
-
-# Agent (requires LiveKit server)
-python -m src.agents.interview_agent
-```
-
-See [Local Development](docs/LOCAL_DEVELOPMENT.md) for detailed setup.
+---
 
 ## Tech Stack
 
 ### Backend
 
-- **FastAPI** - Modern async web framework
-- **Python 3.11+** - Programming language
-- **LangGraph 0.0.40+** - State machine orchestration
-- **SQLAlchemy 2.0+** - ORM with async support
-- **Alembic** - Database migrations
-- **LiveKit Agents** - Real-time voice agents
-- **OpenAI GPT-4o-mini** - LLM for question generation
-- **Instructor** - Structured LLM outputs
-- **PostgreSQL** - Primary database
-- **Redis** - Caching and state management
-- **Docker** - Code sandbox execution
+- FastAPI
+- Python 3.11+
+- LangGraph
+- SQLAlchemy
+- Alembic
+- OpenAI
+- LiveKit Agents
+- PostgreSQL
+- Redis
+- Docker
 
 ### Frontend
 
-- **Next.js 16.1** - React framework
-- **TypeScript 5.0+** - Type safety
-- **React 19.2** - UI library
-- **Tailwind CSS 4** - Styling
-- **Zustand** - State management
-- **TanStack Query** - Data fetching
-- **Monaco Editor** - Code editor
-- **Framer Motion** - Animations
-- **LiveKit Client** - WebRTC integration
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Zustand
+- TanStack Query
+- Monaco Editor
+- Framer Motion
+- LiveKit Client
 
-### Deployment
+---
 
-- **Railway** - Backend and agent hosting
-- **Vercel** - Frontend hosting
+## Quick Start
+
+### Backend
+
+```bash
+python -m uvicorn src.main:app --host 127.0.0.1 --port 8000
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Local portfolio demo mode
+
+For local validation without full external AI services, use the environment setup that enables:
+
+```env
+LOCAL_MOCK_AI=true
+DATABASE_URL=sqlite+aiosqlite:///./local_dev_interviewlab.db
+```
+
+This mode is intended for demonstration and smoke testing, not as a substitute for full production integration.
+
+---
+
+## Full Production Validation Path
+
+To fully validate the intended architecture, the next steps are:
+
+1. disable `LOCAL_MOCK_AI`
+2. configure a real OpenAI API key
+3. connect a working LiveKit environment
+4. validate Docker sandbox execution end to end
+5. switch to PostgreSQL + Redis for production-style testing
+
+---
+
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [API Reference](docs/API.md)
+- [Frontend Guide](docs/FRONTEND.md)
+- [Voice Infrastructure](docs/VOICE_INFRASTRUCTURE.md)
+- [LangGraph Notes](docs/LANGGRAPH.md)
+- [Local Development](docs/LOCAL_DEVELOPMENT.md)
+- [Deployment](docs/DEPLOYMENT.md)
+
+---
 
 ## License
 
