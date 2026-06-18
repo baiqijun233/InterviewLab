@@ -12,7 +12,7 @@ interface SkillRadarChartProps {
   description?: string;
 }
 
-export function SkillRadarChart({ data, title = 'Skill Breakdown', description }: SkillRadarChartProps) {
+export function SkillRadarChart({ data, title = '能力拆解', description }: SkillRadarChartProps) {
   // Format data for Recharts (convert skill names to display format)
   const chartData = data.map(item => ({
     skill: item.skill.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()),
@@ -40,7 +40,7 @@ export function SkillRadarChart({ data, title = 'Skill Breakdown', description }
               tick={{ fontSize: 10, fill: '#9ca3af' }}
             />
             <Radar
-              name="Score"
+              name="得分"
               dataKey="score"
               stroke="#3b82f6"
               fill="#3b82f6"

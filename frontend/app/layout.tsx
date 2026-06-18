@@ -15,26 +15,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "InterviewLab - AI-Powered Interview Preparation",
-  description: "Prepare for interviews with AI-powered practice sessions, resume analysis, and live code practice",
-  keywords: ["interview", "practice", "AI", "coding", "resume"],
+  title: "InterviewLab - 人工智能面试准备平台",
+  description: "通过人工智能练习面试、分析简历、完成编程训练，并持续追踪你的提升过程",
+  keywords: ["面试", "练习", "人工智能", "编程", "简历"],
   openGraph: {
-    title: "InterviewLab - AI-Powered Interview Preparation",
-    description: "Prepare for interviews with AI-powered practice sessions, resume analysis, and live code practice",
+    title: "InterviewLab - 人工智能面试准备平台",
+    description: "通过人工智能练习面试、分析简历、完成编程训练，并持续追踪你的提升过程",
     type: "website",
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "InterviewLab - AI-Powered Interview Preparation",
+        alt: "InterviewLab - 人工智能面试准备平台",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "InterviewLab - AI-Powered Interview Preparation",
-    description: "Prepare for interviews with AI-powered practice sessions, resume analysis, and live code practice",
+    title: "InterviewLab - 人工智能面试准备平台",
+    description: "通过人工智能练习面试、分析简历、完成编程训练，并持续追踪你的提升过程",
     images: ["/opengraph-image"],
   },
   icons: {
@@ -54,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning

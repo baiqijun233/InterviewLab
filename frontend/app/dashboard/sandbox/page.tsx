@@ -55,16 +55,16 @@ print(fibonacci(10))`);
     onSuccess: (data: ExecutionResult) => {
       setResult(data);
       if (data.success && data.exit_code === 0) {
-        toast.success('Code executed successfully!');
+        toast.success('代码运行成功');
       } else {
-        toast.error(data.error || 'Code execution failed');
+        toast.error(data.error || '代码运行失败');
       }
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to execute code');
+      toast.error(error.message || '执行代码失败');
       setResult({
         stdout: '',
-        stderr: error.message || 'Execution failed',
+        stderr: error.message || '执行失败',
         exit_code: 1,
         execution_time_ms: 0,
         success: false,
@@ -75,7 +75,7 @@ print(fibonacci(10))`);
 
   const handleExecute = () => {
     if (!code.trim()) {
-      toast.error('Please enter some code');
+      toast.error('请先输入代码');
       return;
     }
     executeMutation.mutate({ code, language });
@@ -83,7 +83,7 @@ print(fibonacci(10))`);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
-    toast.success('Code copied to clipboard!');
+    toast.success('代码已复制到剪贴板');
   };
 
   const handleDownload = () => {
@@ -95,7 +95,7 @@ print(fibonacci(10))`);
     a.download = `code.${extension}`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('Code downloaded!');
+    toast.success('代码已下载');
   };
 
   const languageOptions = [
@@ -111,9 +111,9 @@ print(fibonacci(10))`);
     <div className="p-8">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Code Practice</h1>
+          <h1 className="text-3xl font-bold tracking-tight">代码练习</h1>
           <p className="text-muted-foreground mt-2">
-            Write and test code in an isolated environment
+            在隔离环境里编写并测试代码
           </p>
         </div>
         <div className="flex items-center space-x-2">
@@ -131,11 +131,11 @@ print(fibonacci(10))`);
           </Select>
           <Button variant="outline" size="sm" onClick={handleCopy}>
             <Copy className="mr-2 h-4 w-4" />
-            Copy
+            复制
           </Button>
           <Button variant="outline" size="sm" onClick={handleDownload}>
             <Download className="mr-2 h-4 w-4" />
-            Download
+            下载
           </Button>
           <Button
             onClick={handleExecute}
@@ -144,12 +144,12 @@ print(fibonacci(10))`);
             {executeMutation.isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Running...
+                运行中...
               </>
             ) : (
               <>
                 <Play className="mr-2 h-4 w-4" />
-                Run Code
+                运行代码
               </>
             )}
           </Button>
@@ -162,7 +162,7 @@ print(fibonacci(10))`);
           <CardHeader>
             <CardTitle className="flex items-center">
               <Code className="mr-2 h-5 w-5" />
-              Editor
+              编辑器
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -190,39 +190,39 @@ print(fibonacci(10))`);
         {/* Output */}
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Output</CardTitle>
+            <CardTitle>输出结果</CardTitle>
           </CardHeader>
           <CardContent>
             {result ? (
               <Tabs defaultValue="stdout" className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="stdout">Output</TabsTrigger>
-                  <TabsTrigger value="stderr">Errors</TabsTrigger>
+                  <TabsTrigger value="stdout">输出</TabsTrigger>
+                  <TabsTrigger value="stderr">错误</TabsTrigger>
                 </TabsList>
                 <TabsContent value="stdout" className="mt-4">
                   <div className="bg-muted rounded-md p-4 min-h-[500px] max-h-[500px] overflow-auto">
                     <pre className="text-sm font-mono whitespace-pre-wrap">
-                      {result.stdout || '(no output)'}
+                      {result.stdout || '（暂无输出）'}
                     </pre>
                   </div>
                   <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
                     <div className="flex items-center space-x-4">
                       <span>
-                        Exit Code: {result.exit_code}
+                        退出码：{result.exit_code}
                         {result.exit_code === 0 ? (
                           <CheckCircle2 className="inline ml-2 h-4 w-4 text-green-500" />
                         ) : (
                           <XCircle className="inline ml-2 h-4 w-4 text-red-500" />
                         )}
                       </span>
-                      <span>Time: {(result.execution_time_ms / 1000).toFixed(3)}s</span>
+                      <span>耗时：{(result.execution_time_ms / 1000).toFixed(3)} 秒</span>
                     </div>
                   </div>
                 </TabsContent>
                 <TabsContent value="stderr" className="mt-4">
                   <div className="bg-destructive/10 border border-destructive/20 rounded-md p-4 min-h-[500px] max-h-[500px] overflow-auto">
                     <pre className="text-sm font-mono whitespace-pre-wrap text-destructive">
-                      {result.stderr || '(no errors)'}
+                      {result.stderr || '（暂无错误）'}
                     </pre>
                   </div>
                 </TabsContent>
@@ -230,7 +230,7 @@ print(fibonacci(10))`);
             ) : (
               <div className="bg-muted rounded-md p-4 min-h-[500px] flex items-center justify-center">
                 <p className="text-muted-foreground">
-                  Run your code to see the output here
+                  运行代码后，这里会显示输出结果
                 </p>
               </div>
             )}

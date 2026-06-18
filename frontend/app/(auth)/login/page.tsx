@@ -26,7 +26,7 @@ export default function LoginPage() {
       await login(email, password);
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Invalid email or password');
+      setError(err.message || '邮箱或密码不正确');
     }
   };
 
@@ -39,9 +39,9 @@ export default function LoginPage() {
               <LogIn className="h-6 w-6 text-primary-foreground" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
+          <CardTitle className="text-2xl font-bold">欢迎回来</CardTitle>
           <CardDescription>
-            Sign in to your InterviewLab account
+            登录你的 InterviewLab 账号
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
@@ -52,13 +52,13 @@ export default function LoginPage() {
               </Alert>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">邮箱</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="email"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder="请输入邮箱地址"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
@@ -69,7 +69,7 @@ export default function LoginPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">密码</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -95,16 +95,16 @@ export default function LoginPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Signing in...
+                  正在登录...
                 </>
               ) : (
-                'Sign in'
+                '登录'
               )}
             </Button>
             <p className="text-sm text-center text-muted-foreground">
-              Don't have an account?{' '}
+              还没有账号？{' '}
               <Link href="/register" className="text-primary hover:underline font-medium">
-                Sign up
+                立即注册
               </Link>
             </p>
           </CardFooter>

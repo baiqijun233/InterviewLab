@@ -136,15 +136,15 @@ print(fibonacci(10))`;
       // Always show execution result in the right pane
       setResult(data);
       if (data.success && data.exit_code === 0) {
-        toast.success('Code executed successfully!');
+        toast.success('代码运行成功');
       } else {
-        toast.error(data.error || 'Code execution failed');
+        toast.error(data.error || '代码运行失败');
       }
     },
     onError: (error: Error | unknown) => {
-      const message = error instanceof Error ? error.message : 'Failed to execute code';
+      const message = error instanceof Error ? error.message : '执行代码失败';
       toast.error(message);
-      const errorMessage = error instanceof Error ? error.message : 'Execution failed';
+      const errorMessage = error instanceof Error ? error.message : '执行失败';
       setResult({
         stdout: '',
         stderr: errorMessage,
@@ -166,18 +166,18 @@ print(fibonacci(10))`;
     },
     onSuccess: () => {
       if (id) {
-        toast.success('Code submitted to interviewer for review!');
+        toast.success('代码已提交给面试官进行评审');
       }
     },
     onError: (error: Error | unknown) => {
-      const message = error instanceof Error ? error.message : 'Failed to submit code to interviewer';
+      const message = error instanceof Error ? error.message : '提交代码给面试官失败';
       toast.error(message);
     },
   });
 
   const handleRun = async () => {
     if (!code.trim()) {
-      toast.error('Please enter some code');
+      toast.error('请先输入代码');
       return;
     }
     
@@ -187,7 +187,7 @@ print(fibonacci(10))`;
 
   const handleSubmit = async () => {
     if (!code.trim()) {
-      toast.error('Please enter some code');
+      toast.error('请先输入代码');
       return;
     }
     
@@ -195,13 +195,13 @@ print(fibonacci(10))`;
     if (id) {
       submitCodeMutation.mutate({ code, language });
     } else {
-      toast.error('No interview ID found');
+      toast.error('未找到面试编号');
     }
   };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
-    toast.success('Code copied to clipboard!');
+    toast.success('代码已复制到剪贴板');
   };
 
   const handleDownload = () => {
@@ -213,7 +213,7 @@ print(fibonacci(10))`;
     a.download = `code.${extension}`;
     a.click();
     URL.revokeObjectURL(url);
-    toast.success('Code downloaded!');
+    toast.success('代码已下载');
   };
 
   const languageOptions = [
@@ -233,7 +233,7 @@ print(fibonacci(10))`;
             <div className="flex-1">
               <CardTitle className="flex items-center">
                 <Code className="mr-2 h-5 w-5" />
-                Code Editor
+                代码编辑器
               </CardTitle>
               {exerciseDescription && (
                 <p className="text-sm text-muted-foreground mt-1">
@@ -271,7 +271,7 @@ print(fibonacci(10))`;
                 ) : (
                   <>
                     <Play className="h-4 w-4 mr-1" />
-                    Run
+                    运行
                   </>
                 )}
               </Button>
@@ -287,7 +287,7 @@ print(fibonacci(10))`;
                   ) : (
                     <>
                       <Send className="h-4 w-4 mr-1" />
-                      Submit
+                      提交
                     </>
                   )}
                 </Button>
@@ -322,38 +322,38 @@ print(fibonacci(10))`;
               {result ? (
                 <Tabs defaultValue="stdout" className="w-full h-full flex flex-col">
                   <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="stdout">Output</TabsTrigger>
-                    <TabsTrigger value="stderr">Errors</TabsTrigger>
+                    <TabsTrigger value="stdout">输出</TabsTrigger>
+                    <TabsTrigger value="stderr">错误</TabsTrigger>
                   </TabsList>
                   <TabsContent value="stdout" className="flex-1 min-h-0 mt-2">
                     <div className="bg-muted rounded-md p-4 h-full overflow-auto">
                       <pre className="text-sm font-mono whitespace-pre-wrap">
-                        {result.stdout || '(no output)'}
+                        {result.stdout || '（暂无输出）'}
                       </pre>
                     </div>
                     <div className="mt-2 flex flex-col space-y-1 text-sm text-muted-foreground">
                       <div className="flex items-center space-x-2">
-                        <span>Exit Code: {result.exit_code}</span>
+                        <span>退出码：{result.exit_code}</span>
                         {result.exit_code === 0 ? (
                           <CheckCircle2 className="h-4 w-4 text-green-500" />
                         ) : (
                           <XCircle className="h-4 w-4 text-red-500" />
                         )}
                       </div>
-                      <span>Time: {(result.execution_time_ms / 1000).toFixed(3)}s</span>
+                      <span>耗时：{(result.execution_time_ms / 1000).toFixed(3)} 秒</span>
                     </div>
                   </TabsContent>
                   <TabsContent value="stderr" className="flex-1 min-h-0 mt-2">
                     <div className="bg-destructive/10 border border-destructive/20 rounded-md p-4 h-full overflow-auto">
                       <pre className="text-sm font-mono whitespace-pre-wrap text-destructive">
-                        {result.stderr || '(no errors)'}
+                        {result.stderr || '（暂无错误）'}
                       </pre>
                     </div>
                   </TabsContent>
                 </Tabs>
               ) : (
                 <div className="bg-muted rounded-md p-4 h-full flex items-center justify-center">
-                  <p className="text-muted-foreground text-center text-sm">Run your code to see the output here</p>
+                  <p className="text-muted-foreground text-center text-sm">运行代码后，这里会显示输出结果</p>
                 </div>
               )}
             </div>

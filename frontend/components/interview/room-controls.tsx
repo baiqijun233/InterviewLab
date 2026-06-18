@@ -48,13 +48,13 @@ export function RoomControls({ room, onMuteChange, onVideoChange }: RoomControls
     console.log('toggleMute called', { room: !!room, roomState: room?.state });
     
     if (!room) {
-      toast.error('Room not available');
+      toast.error('房间当前不可用');
       return;
     }
 
     // Only allow if room is connected
     if (room.state !== 'connected') {
-      toast.error(`Room is ${room.state}. Please wait for connection.`);
+      toast.error(`房间当前状态为 ${room.state}，请等待连接完成。`);
       return;
     }
 
@@ -70,16 +70,16 @@ export function RoomControls({ room, onMuteChange, onVideoChange }: RoomControls
         await localParticipant.setMicrophoneEnabled(true);
         setIsMuted(false);
         onMuteChange?.(false);
-        toast.success('Microphone enabled');
+        toast.success('麦克风已开启');
       } else {
         await localParticipant.setMicrophoneEnabled(false);
         setIsMuted(true);
         onMuteChange?.(true);
-        toast.success('Microphone muted');
+        toast.success('麦克风已静音');
       }
     } catch (error) {
       console.error('Failed to toggle mute:', error);
-      toast.error(`Failed to toggle microphone: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      toast.error(`切换麦克风失败：${error instanceof Error ? error.message : '未知错误'}`);
     } finally {
       setIsLoading(false);
     }
@@ -89,13 +89,13 @@ export function RoomControls({ room, onMuteChange, onVideoChange }: RoomControls
     console.log('toggleVideo called', { room: !!room, roomState: room?.state });
     
     if (!room) {
-      toast.error('Room not available');
+      toast.error('房间当前不可用');
       return;
     }
 
     // Only allow if room is connected
     if (room.state !== 'connected') {
-      toast.error(`Room is ${room.state}. Please wait for connection.`);
+      toast.error(`房间当前状态为 ${room.state}，请等待连接完成。`);
       return;
     }
 
@@ -111,16 +111,16 @@ export function RoomControls({ room, onMuteChange, onVideoChange }: RoomControls
         await localParticipant.setCameraEnabled(false);
         setIsVideoEnabled(false);
         onVideoChange?.(false);
-        toast.success('Camera disabled');
+        toast.success('摄像头已关闭');
       } else {
         await localParticipant.setCameraEnabled(true);
         setIsVideoEnabled(true);
         onVideoChange?.(true);
-        toast.success('Camera enabled');
+        toast.success('摄像头已开启');
       }
     } catch (error) {
       console.error('Failed to toggle video:', error);
-      toast.error(`Failed to toggle camera: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      toast.error(`切换摄像头失败：${error instanceof Error ? error.message : '未知错误'}`);
     } finally {
       setIsLoading(false);
     }
@@ -136,7 +136,7 @@ export function RoomControls({ room, onMuteChange, onVideoChange }: RoomControls
         onClick={toggleMute}
         className="rounded-full"
         disabled={!isRoomReady || isLoading}
-        title={!isRoomReady ? 'Waiting for room connection...' : isMuted ? 'Unmute' : 'Mute'}
+        title={!isRoomReady ? '正在等待房间连接...' : isMuted ? '取消静音' : '静音'}
       >
         {isMuted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
       </Button>
@@ -147,7 +147,7 @@ export function RoomControls({ room, onMuteChange, onVideoChange }: RoomControls
         onClick={toggleVideo}
         className="rounded-full"
         disabled={!isRoomReady || isLoading}
-        title={!isRoomReady ? 'Waiting for room connection...' : isVideoEnabled ? 'Disable camera' : 'Enable camera'}
+        title={!isRoomReady ? '正在等待房间连接...' : isVideoEnabled ? '关闭摄像头' : '开启摄像头'}
       >
         {isVideoEnabled ? <Video className="h-4 w-4" /> : <VideoOff className="h-4 w-4" />}
       </Button>

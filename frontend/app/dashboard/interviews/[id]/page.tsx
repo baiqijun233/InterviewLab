@@ -185,11 +185,11 @@ export default function InterviewDetailPage() {
     },
     onDisconnected: (reason) => {
       console.warn('Room disconnected:', reason);
-      toast.warning('Room disconnected. Click reconnect to continue.');
+        toast.warning('房间连接已断开，请点击重新连接以继续。');
     },
     onError: (error) => {
       console.error('Room connection error:', error);
-      toast.error(`Connection failed: ${error.message}`);
+      toast.error(`连接失败：${error.message}`);
     },
   });
 
@@ -219,7 +219,7 @@ export default function InterviewDetailPage() {
       const roomName = `interview-${interviewId}`;
       const response = await voiceApi.getToken({
         room_name: roomName,
-        participant_name: user?.full_name || 'User',
+        participant_name: user?.full_name || '用户',
         participant_identity: user?.id.toString() || '',
         can_publish: true,
         can_subscribe: true,
@@ -229,7 +229,7 @@ export default function InterviewDetailPage() {
     onSuccess: (data) => {
       setVoiceToken({ token: data.token, url: data.url });
       setShowVoiceVideo(true);
-      toast.success('Voice token obtained. Connecting to room...');
+      toast.success('已获取语音令牌，正在连接房间...');
     },
     onError: (error: any) => {
       console.error('Failed to get voice token:', error);
@@ -250,10 +250,10 @@ export default function InterviewDetailPage() {
     onSuccess: (data) => {
       queryClient.setQueryData(['interview', interviewId], data);
       setIsStarting(false);
-      toast.success('Interview started!');
+      toast.success('面试已开始');
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to start interview');
+      toast.error(error.message || '开始面试失败');
       setIsStarting(false);
     },
   });
@@ -263,10 +263,10 @@ export default function InterviewDetailPage() {
     mutationFn: () => interviewsApi.complete(interviewId),
     onSuccess: (data) => {
       queryClient.setQueryData(['interview', interviewId], data);
-      toast.success('Interview completed!');
+      toast.success('面试已完成');
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to complete interview');
+      toast.error(error.message || '完成面试失败');
     },
   });
 
@@ -276,7 +276,7 @@ export default function InterviewDetailPage() {
   };
 
   const handleComplete = () => {
-    if (confirm('Are you sure you want to complete this interview?')) {
+    if (confirm('确认要结束这场面试吗？')) {
       completeMutation.mutate();
     }
   };
@@ -287,7 +287,7 @@ export default function InterviewDetailPage() {
     
     try {
       if (!roomInstance || !isConnected) {
-        toast.error('Not connected to room yet. Please wait for connection.');
+        toast.error('尚未连接到房间，请稍等连接完成。');
         return;
       }
 
@@ -302,7 +302,7 @@ export default function InterviewDetailPage() {
         { reliable: true }
       );
 
-      toast.info('Sent test request to interviewer. Listen for greeting...');
+      toast.info('已向面试官发送测试请求，请留意语音播放。');
       
       // Check if interviewer audio tracks are available
       let hasAudioTracks = false;
@@ -317,14 +317,14 @@ export default function InterviewDetailPage() {
       }
 
       if (!hasAudioTracks) {
-        toast.warning('Waiting for interviewer audio tracks. The interviewer should speak shortly...');
+        toast.warning('正在等待面试官音频轨道，稍后应会开始说话。');
       }
     } catch (error: any) {
       console.error('Audio test failed:', error);
       toast.error(
         error.name === 'NotAllowedError'
-          ? 'Please allow microphone access to test audio'
-          : `Audio test failed: ${error.message}`
+          ? '请先允许麦克风权限后再测试音频'
+          : `音频测试失败：${error.message}`
       );
     }
   };
@@ -346,9 +346,9 @@ export default function InterviewDetailPage() {
       <div className="h-screen flex items-center justify-center">
         <Card>
           <CardContent className="py-12 text-center">
-            <p className="text-muted-foreground">Interview not found</p>
+            <p className="text-muted-foreground">未找到这场面试</p>
             <Button asChild className="mt-4" variant="outline">
-              <Link href="/dashboard/interviews">Back to Interviews</Link>
+              <Link href="/dashboard/interviews">返回面试列表</Link>
             </Button>
           </CardContent>
         </Card>
@@ -364,7 +364,7 @@ export default function InterviewDetailPage() {
           <Button variant="ghost" size="sm" asChild>
             <Link href="/dashboard/interviews">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back
+              返回
             </Link>
           </Button>
           <div>
@@ -380,12 +380,12 @@ export default function InterviewDetailPage() {
               {isStarting || startMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Starting...
+                  启动中...
                 </>
               ) : (
                 <>
                   <Play className="mr-2 h-4 w-4" />
-                  Start Interview
+                  开始面试
                 </>
               )}
             </Button>
@@ -399,12 +399,12 @@ export default function InterviewDetailPage() {
               {voiceTokenMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Connecting...
+                  连接中...
                 </>
               ) : (
                 <>
                   <Video className="mr-2 h-4 w-4" />
-                  Enable Video
+                  开启视频
                 </>
               )}
             </Button>
@@ -427,12 +427,12 @@ export default function InterviewDetailPage() {
                   {isConnecting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Reconnecting...
+                      重连中...
                     </>
                   ) : (
                     <>
                       <RefreshCw className="mr-2 h-4 w-4" />
-                      Reconnect
+                      重新连接
                     </>
                   )}
                 </Button>
@@ -441,10 +441,10 @@ export default function InterviewDetailPage() {
                 <Button
                   variant="outline"
                   onClick={testAudio}
-                  title="Test audio playback"
+                  title="测试音频播放"
                 >
                   <Volume2 className="mr-2 h-4 w-4" />
-                  Test Audio
+                  测试音频
                 </Button>
               )}
             </>
@@ -458,12 +458,12 @@ export default function InterviewDetailPage() {
               {completeMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Completing...
+                  结束中...
                 </>
               ) : (
                 <>
                   <CheckCircle2 className="mr-2 h-4 w-4" />
-                  Complete
+                  结束面试
                 </>
               )}
             </Button>
@@ -477,9 +477,9 @@ export default function InterviewDetailPage() {
           <div className="flex items-center space-x-3">
             <AlertCircle className="h-5 w-5 shrink-0" />
             <div>
-              <p className="font-semibold text-sm">Room Disconnected</p>
+              <p className="font-semibold text-sm">房间已断开</p>
               <p className="text-xs text-destructive-foreground/80">
-                Your connection to the interview room has been lost. Click reconnect to continue.
+                你与面试房间的连接已中断，请点击重新连接继续。
               </p>
             </div>
           </div>
@@ -493,12 +493,12 @@ export default function InterviewDetailPage() {
             {isConnecting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Reconnecting...
+                重连中...
               </>
             ) : (
               <>
                 <RefreshCw className="mr-2 h-4 w-4" />
-                Reconnect Now
+                立即重连
               </>
             )}
           </Button>
@@ -511,8 +511,8 @@ export default function InterviewDetailPage() {
           <Tabs defaultValue="skills" className="flex-1 flex flex-col min-h-0 w-full">
             <div className="border-b border-border px-4 pt-4">
               <TabsList>
-                <TabsTrigger value="skills">Skill Breakdown</TabsTrigger>
-                <TabsTrigger value="transcript">Transcript</TabsTrigger>
+                <TabsTrigger value="skills">能力拆解</TabsTrigger>
+                <TabsTrigger value="transcript">面试记录</TabsTrigger>
               </TabsList>
             </div>
             
@@ -531,7 +531,7 @@ export default function InterviewDetailPage() {
                 <Card>
                   <CardContent className="p-12 text-center">
                     <p className="text-muted-foreground">
-                      Skill breakdown not available yet. The analysis may still be processing.
+                      能力拆解暂时还不可用，分析结果可能仍在处理中。
                     </p>
                   </CardContent>
                 </Card>
@@ -541,7 +541,7 @@ export default function InterviewDetailPage() {
             <TabsContent value="transcript" className="flex-1 overflow-y-auto p-4 mt-0">
               <Card className="h-full">
                 <CardContent className="p-6">
-                  <h3 className="font-semibold mb-4">Interview Transcript</h3>
+                  <h3 className="font-semibold mb-4">面试记录</h3>
                   <div className="space-y-4">
                     {interview.conversation_history && interview.conversation_history.length > 0 ? (
                       interview.conversation_history
@@ -556,7 +556,7 @@ export default function InterviewDetailPage() {
                             }`}
                           >
                             <div className="font-semibold text-sm mb-1">
-                              {msg.role === 'user' ? 'You' : 'Interviewer'}
+                              {msg.role === 'user' ? '你' : '面试官'}
                             </div>
                             <div className="text-sm whitespace-pre-wrap">{msg.content}</div>
                             {msg.timestamp && (
@@ -568,7 +568,7 @@ export default function InterviewDetailPage() {
                         ))
                     ) : (
                       <p className="text-sm text-muted-foreground text-center py-4">
-                        No transcript available.
+                        暂时还没有可显示的记录。
                       </p>
                     )}
                   </div>
@@ -585,7 +585,7 @@ export default function InterviewDetailPage() {
                 <div className="bg-destructive/10 border-b border-destructive/20 px-4 py-3 flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <AlertCircle className="h-5 w-5 text-destructive" />
-                    <span className="text-sm font-medium text-destructive">Room disconnected. Click reconnect to continue.</span>
+                    <span className="text-sm font-medium text-destructive">房间连接已断开，请点击重新连接继续。</span>
                   </div>
                   <Button 
                     size="sm" 
@@ -597,12 +597,12 @@ export default function InterviewDetailPage() {
                     {isConnecting ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Reconnecting...
+                        重连中...
                       </>
                     ) : (
                       <>
                         <RefreshCw className="mr-2 h-4 w-4" />
-                        Reconnect
+                        重新连接
                       </>
                     )}
                   </Button>
@@ -612,7 +612,7 @@ export default function InterviewDetailPage() {
                 <div className="bg-blue-500/10 border-b border-blue-500/20 px-4 py-2 flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
-                    <span className="text-sm text-blue-600">Connecting to room...</span>
+                    <span className="text-sm text-blue-600">正在连接房间...</span>
                   </div>
                 </div>
               )}
@@ -621,7 +621,7 @@ export default function InterviewDetailPage() {
                 <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2 flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Loader2 className="h-4 w-4 animate-spin text-amber-600" />
-                    <span className="text-sm text-amber-700">Interviewer is preparing... Please wait a moment.</span>
+                    <span className="text-sm text-amber-700">面试官正在准备中，请稍等片刻。</span>
                   </div>
                 </div>
               )}
@@ -633,7 +633,7 @@ export default function InterviewDetailPage() {
                 {/* Left Column: Participant Video */}
                 <ParticipantVideo 
                   room={roomInstance} 
-                  userName={user?.full_name || 'You'}
+                  userName={user?.full_name || '你'}
                 />
                 
                 {/* Right Column: Interviewer Avatar with Waves */}
@@ -658,16 +658,16 @@ export default function InterviewDetailPage() {
               <div className="h-64 grid grid-cols-2 gap-4">
                 <Card className="flex items-center justify-center">
                   <CardContent className="text-center">
-                    <p className="text-sm font-medium mb-2">Your Video</p>
+                    <p className="text-sm font-medium mb-2">你的视频</p>
                     <p className="text-xs text-muted-foreground">
-                      {canRespond ? 'Enable video to start' : 'Start interview to begin'}
+                      {canRespond ? '开启视频后即可开始' : '开始面试后即可进入'}
                     </p>
                   </CardContent>
                 </Card>
                     <Card className="flex items-center justify-center bg-primary/5">
                       <CardContent className="text-center">
-                        <p className="text-sm font-medium mb-2">Interviewer</p>
-                        <p className="text-xs text-muted-foreground">Will appear when connected</p>
+                        <p className="text-sm font-medium mb-2">面试官</p>
+                        <p className="text-xs text-muted-foreground">连接成功后会显示</p>
                       </CardContent>
                     </Card>
               </div>
@@ -681,12 +681,12 @@ export default function InterviewDetailPage() {
                     {voiceTokenMutation.isPending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Connecting...
+                        连接中...
                       </>
                     ) : (
                       <>
                         <Video className="mr-2 h-4 w-4" />
-                        Enable Video
+                        开启视频
                       </>
                     )}
                   </Button>
@@ -697,7 +697,7 @@ export default function InterviewDetailPage() {
                 <Card>
                   <CardContent className="h-full flex items-center justify-center">
                     <p className="text-sm text-muted-foreground text-center">
-                      Transcription will appear here once the interview starts
+                      面试开始后，这里会显示实时转写内容
                     </p>
                   </CardContent>
                 </Card>
@@ -715,7 +715,7 @@ export default function InterviewDetailPage() {
                   <Card>
                     <CardContent className="py-12 text-center">
                       <p className="text-muted-foreground">
-                        Start the interview to access the code editor
+                        开始面试后即可使用代码编辑器
                       </p>
                     </CardContent>
                   </Card>

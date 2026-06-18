@@ -46,12 +46,12 @@ export function TranscriptionDisplay({ room }: TranscriptionDisplayProps) {
           transcribedTrackId,
         });
 
-        // Normalize speaker name - replace agent/AI references with "Interviewer"
+        // Normalize speaker name - replace agent/AI references with "面试官"
         let speakerName = participantInfo?.name || 
                           participantInfo?.identity || 
                           'Unknown';
         
-        // Replace agent/AI references with "Interviewer"
+        // Replace agent/AI references with "面试官"
         if (speakerName.toLowerCase().includes('agent') || 
             speakerName.toLowerCase().includes('ai') ||
             speakerName.toLowerCase().includes('interviewer')) {
@@ -132,11 +132,11 @@ export function TranscriptionDisplay({ room }: TranscriptionDisplayProps) {
   return (
     <Card className="h-full flex flex-col">
       <CardContent className="flex-1 p-4 flex flex-col min-h-0">
-        <h3 className="text-sm font-semibold mb-3">Conversation</h3>
+        <h3 className="text-sm font-semibold mb-3">面试对话</h3>
         <div className="flex-1 overflow-y-auto space-y-2 pr-4" ref={scrollAreaRef}>
           {messages.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-4">
-              Waiting for conversation to start...
+              正在等待面试对话开始...
             </p>
           ) : (
             messages.map((message) => {
@@ -147,7 +147,7 @@ export function TranscriptionDisplay({ room }: TranscriptionDisplayProps) {
               const isUser = message.speaker === room?.localParticipant?.name || 
                            message.speaker === room?.localParticipant?.identity;
               
-              const displayName = isUser ? 'You' : (isInterviewer ? 'Interviewer' : message.speaker);
+              const displayName = isUser ? '你' : (isInterviewer ? '面试官' : message.speaker);
               
               return (
                 <div
@@ -177,7 +177,7 @@ export function TranscriptionDisplay({ room }: TranscriptionDisplayProps) {
                         {displayName}
                       </span>
                       {!message.isFinal && (
-                        <span className="text-xs text-muted-foreground italic">(typing...)</span>
+                        <span className="text-xs text-muted-foreground italic">（正在输入...）</span>
                       )}
                     </div>
                     <p className={`text-sm ${

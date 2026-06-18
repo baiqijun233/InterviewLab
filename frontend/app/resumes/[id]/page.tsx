@@ -59,9 +59,9 @@ export default function ResumeDetailPage() {
           <Card>
             <CardContent className="py-12 text-center">
               <AlertCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">Resume not found</p>
+              <p className="text-muted-foreground">未找到这份简历</p>
               <Button asChild className="mt-4" variant="outline">
-                <Link href="/resumes">Back to Resumes</Link>
+                <Link href="/resumes">返回简历列表</Link>
               </Button>
             </CardContent>
           </Card>
@@ -78,7 +78,7 @@ export default function ResumeDetailPage() {
             <Button variant="ghost" size="sm" asChild>
               <Link href="/resumes">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Resumes
+                返回简历列表
               </Link>
             </Button>
           </div>
@@ -86,11 +86,11 @@ export default function ResumeDetailPage() {
             <CardContent className="py-12 text-center">
               <AlertCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
               <p className="text-muted-foreground">
-                Resume analysis is {resume.analysis_status === 'processing' ? 'in progress' : resume.analysis_status}.
-                Please check back later.
+                简历解析状态为 {resume.analysis_status === 'processing' ? '处理中' : resume.analysis_status}。
+                请稍后再回来查看。
               </p>
               <Button asChild className="mt-4" variant="outline">
-                <Link href="/resumes">Back to Resumes</Link>
+                <Link href="/resumes">返回简历列表</Link>
               </Button>
             </CardContent>
           </Card>
@@ -107,7 +107,7 @@ export default function ResumeDetailPage() {
             <Button variant="ghost" size="sm" asChild>
               <Link href="/resumes">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Resumes
+                返回简历列表
               </Link>
             </Button>
           </div>
@@ -115,10 +115,10 @@ export default function ResumeDetailPage() {
             <CardContent className="py-12 text-center">
               <AlertCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
               <p className="text-muted-foreground">
-                No extracted data available for this resume.
+                这份简历暂时还没有可展示的解析数据。
               </p>
               <Button asChild className="mt-4" variant="outline">
-                <Link href="/resumes">Back to Resumes</Link>
+                <Link href="/resumes">返回简历列表</Link>
               </Button>
             </CardContent>
           </Card>
@@ -137,7 +137,7 @@ export default function ResumeDetailPage() {
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/resumes">
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back
+                  返回
                 </Link>
               </Button>
               <div className="flex items-center gap-2">
@@ -151,7 +151,7 @@ export default function ResumeDetailPage() {
               <span>{new Date(resume.created_at).toLocaleDateString()}</span>
               <Badge variant="default" className="bg-green-500">
                 <CheckCircle2 className="mr-1 h-3 w-3" />
-                Analyzed
+                已解析
               </Badge>
             </div>
           </div>

@@ -1,7 +1,7 @@
 {
   "name": "InterviewLab",
   "short_name": "InterviewLab",
-  "description": "AI-Powered Interview Preparation Platform",
+  "description": "人工智能面试准备平台",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

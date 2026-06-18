@@ -88,40 +88,40 @@ export default function DashboardPage() {
   // Stats for collapsible section
   const stats = [
     {
-      title: 'Total Interviews',
+      title: '面试总数',
       value: interviews?.length || 0,
       icon: MessageSquare,
-      description: 'All time',
+      description: '累计记录',
     },
     {
-      title: 'Completed',
+      title: '已完成',
       value: completedInterviews.length,
       icon: CheckCircle2,
-      description: 'Finished interviews',
+      description: '完成的面试',
     },
     {
-      title: 'In Progress',
+      title: '进行中',
       value: inProgressInterviews.length,
       icon: Clock,
-      description: 'Active sessions',
+      description: '当前会话',
     },
     {
-      title: 'Average Score',
+      title: '平均分',
       value: `${Math.round(avgScore * 100)}%`,
       icon: Target,
-      description: 'Based on completed',
+      description: '基于已完成面试',
     },
     {
-      title: 'Total Turns',
+      title: '总轮次',
       value: totalTurns,
       icon: TrendingUp,
-      description: 'Conversation turns',
+      description: '对话轮数',
     },
     {
-      title: 'Avg Turns',
+      title: '平均轮次',
       value: avgTurns,
       icon: BarChart3,
-      description: 'Per interview',
+      description: '每场面试',
     },
   ];
 
@@ -150,10 +150,10 @@ export default function DashboardPage() {
     <div className="p-8 space-y-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">
-          Welcome back, {user?.full_name?.split(' ')[0] || 'User'}!
+          欢迎回来，{user?.full_name?.split(' ')[0] || '用户'}！
         </h1>
         <p className="text-muted-foreground mt-2">
-          Get ready for your next interview with AI-powered practice sessions.
+          通过人工智能练习，提前为下一场面试做好准备。
         </p>
       </div>
 
@@ -161,33 +161,33 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         {[
           {
-            title: 'Resumes',
+            title: '简历',
             value: resumesLoading ? '...' : (resumes?.length || 0).toString(),
-            description: 'Uploaded resumes',
+            description: '已上传简历',
             icon: FileText,
             color: 'text-blue-600',
             bgColor: 'bg-blue-50 dark:bg-blue-950',
           },
           {
-            title: 'Interviews',
+            title: '面试',
             value: interviewsLoading ? '...' : (interviews?.length || 0).toString(),
-            description: 'Practice sessions',
+            description: '练习场次',
             icon: MessageSquare,
             color: 'text-green-600',
             bgColor: 'bg-green-50 dark:bg-green-950',
           },
           {
-            title: 'Completed',
+            title: '已完成',
             value: interviewsLoading ? '...' : completedInterviews.length.toString(),
-            description: 'Finished interviews',
+            description: '完成的面试',
             icon: Code,
             color: 'text-purple-600',
             bgColor: 'bg-purple-50 dark:bg-purple-950',
           },
           {
-            title: 'Average Score',
+            title: '平均分',
             value: avgScore === 0 ? '--' : `${Math.round(avgScore * 100)}%`,
-            description: 'Overall performance',
+            description: '整体表现',
             icon: TrendingUp,
             color: 'text-orange-600',
             bgColor: 'bg-orange-50 dark:bg-orange-950',
@@ -214,7 +214,7 @@ export default function DashboardPage() {
       {/* Collapsible Detailed Stats Section */}
       <Collapsible open={isStatsOpen} onOpenChange={setIsStatsOpen}>
         <CollapsibleHeader className="group cursor-pointer flex items-center justify-between p-4 rounded-lg hover:bg-muted/50 transition-colors">
-          <span className="text-lg font-semibold">Detailed Statistics</span>
+          <span className="text-lg font-semibold">详细统计</span>
           <ChevronDown className={`h-5 w-5 text-muted-foreground transition-transform ${isStatsOpen ? 'rotate-180' : ''}`} />
         </CollapsibleHeader>
         <CollapsibleContent className="pt-4">
@@ -251,8 +251,8 @@ export default function DashboardPage() {
         {/* Recent Interviews */}
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Your latest interview sessions</CardDescription>
+            <CardTitle>最近活动</CardTitle>
+            <CardDescription>你最近的面试练习记录</CardDescription>
           </CardHeader>
           <CardContent>
             {interviewsLoading ? (
@@ -281,20 +281,20 @@ export default function DashboardPage() {
                           {interview.status === 'completed' ? '✓' : interview.status === 'in_progress' ? '→' : '○'}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          {interview.turn_count} turns
+                          {interview.turn_count} 轮
                         </div>
                       </div>
                     </div>
                   </Link>
                 ))}
                 <Button asChild variant="outline" className="w-full mt-2">
-                  <Link href="/dashboard/interviews">View All Interviews</Link>
+                  <Link href="/dashboard/interviews">查看全部面试</Link>
                 </Button>
               </div>
             ) : (
               <div className="text-center py-8 text-muted-foreground">
-                <p>No recent activity</p>
-                <p className="text-sm mt-2">Start your first interview to see activity here</p>
+                <p>暂时还没有最近活动</p>
+                <p className="text-sm mt-2">开始第一场面试后，这里会显示记录</p>
               </div>
             )}
           </CardContent>
@@ -304,9 +304,9 @@ export default function DashboardPage() {
       {/* Skill Analytics Section - Charts */}
       <div className="space-y-6 mt-8">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Skill Analytics</h2>
+          <h2 className="text-2xl font-bold tracking-tight">能力分析</h2>
           <p className="text-muted-foreground mt-1">
-            Track your performance and skill progression
+            跟踪你的表现和能力成长趋势
           </p>
         </div>
         
@@ -314,13 +314,13 @@ export default function DashboardPage() {
           <Card>
             <CardContent className="p-12 text-center">
               <BarChart3 className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h3 className="text-lg font-semibold mb-2">No completed interviews yet</h3>
+              <h3 className="text-lg font-semibold mb-2">还没有已完成的面试</h3>
               <p className="text-muted-foreground mb-4">
-                Complete an interview to see your skill analytics and progression charts.
+                完成一场面试后，这里会显示能力分析和成长图表。
               </p>
               <Button asChild>
                 <Link href="/dashboard/interviews">
-                  Start an Interview
+                  开始面试
                 </Link>
               </Button>
             </CardContent>
@@ -330,10 +330,10 @@ export default function DashboardPage() {
 
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="progression">Progression</TabsTrigger>
-              <TabsTrigger value="comparison">Comparison</TabsTrigger>
-              <TabsTrigger value="interviews">Interviews</TabsTrigger>
+              <TabsTrigger value="overview">总览</TabsTrigger>
+              <TabsTrigger value="progression">成长趋势</TabsTrigger>
+              <TabsTrigger value="comparison">对比分析</TabsTrigger>
+              <TabsTrigger value="interviews">面试详情</TabsTrigger>
             </TabsList>
 
             {/* Overview Tab */}
@@ -348,14 +348,14 @@ export default function DashboardPage() {
               ) : skillAverages ? (
                 <SkillAveragesCard
                   averages={skillAverages}
-                  title="Average Skill Scores"
-                  description="Your average performance across all completed interviews"
+                  title="平均能力得分"
+                  description="你在所有已完成面试中的平均表现"
                 />
               ) : (
                 <Card>
                   <CardContent className="p-6 text-center text-muted-foreground">
                     <AlertCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No skill data available yet. Complete an interview to see your skill scores.</p>
+                    <p>暂时还没有能力数据，完成一场面试后即可看到评分。</p>
                   </CardContent>
                 </Card>
               )}
@@ -371,14 +371,14 @@ export default function DashboardPage() {
                 Object.values(skillProgression).some(skill => skill.length > 0) ? (
                   <SkillProgressionChart
                     data={skillProgression}
-                    title="Skill Progression Over Time"
-                    description="Track how your skills improve across interviews"
+                    title="能力成长趋势"
+                    description="查看你在不同面试中的能力提升情况"
                   />
                 ) : (
                   <Card>
                     <CardContent className="p-6 text-center text-muted-foreground">
                       <TrendingUp className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>Complete more interviews to see progression over time.</p>
+                      <p>完成更多面试后，这里会显示更完整的成长趋势。</p>
                     </CardContent>
                   </Card>
                 )
@@ -397,14 +397,14 @@ export default function DashboardPage() {
                 Object.values(skillProgression).some(skill => skill.length > 0) ? (
                   <SkillProgressionChart
                     data={skillProgression}
-                    title="Skill Progression Over Time"
-                    description="Track how your skills improve across interviews"
+                    title="能力成长趋势"
+                    description="查看你在不同面试中的能力提升情况"
                   />
                 ) : (
                   <Card>
                     <CardContent className="p-6 text-center text-muted-foreground">
                       <TrendingUp className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>Complete more interviews to see progression over time.</p>
+                      <p>完成更多面试后，这里会显示更完整的成长趋势。</p>
                     </CardContent>
                   </Card>
                 )
@@ -415,15 +415,15 @@ export default function DashboardPage() {
             <TabsContent value="comparison" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Compare Interviews</CardTitle>
+                  <CardTitle>面试对比</CardTitle>
                   <CardDescription>
-                    Select 2-3 completed interviews to compare skill scores
+                    选择 2 到 3 场已完成面试，对比能力得分
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {completedInterviews.length === 0 ? (
                     <p className="text-sm text-muted-foreground text-center py-4">
-                      No completed interviews to compare.
+                      暂时没有可用于对比的已完成面试。
                     </p>
                   ) : (
                     <>
@@ -454,10 +454,10 @@ export default function DashboardPage() {
                       {selectedInterviewIds.length > 0 && (
                         <div className="flex items-center justify-between">
                           <p className="text-sm text-muted-foreground">
-                            {selectedInterviewIds.length} interview(s) selected
+                            已选择 {selectedInterviewIds.length} 场面试
                           </p>
                           <Button variant="outline" size="sm" onClick={clearSelection}>
-                            Clear Selection
+                            清空选择
                           </Button>
                         </div>
                       )}
@@ -465,7 +465,7 @@ export default function DashboardPage() {
                       {selectedInterviewIds.length < 2 && (
                         <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg dark:bg-yellow-950 dark:border-yellow-900">
                           <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                            Select at least 2 interviews to compare.
+                            至少选择 2 场面试后才能开始对比。
                           </p>
                         </div>
                       )}
@@ -483,14 +483,14 @@ export default function DashboardPage() {
               ) : skillComparison && selectedInterviewIds.length >= 2 ? (
                 <SkillComparison
                   comparison={skillComparison}
-                  title="Interview Skill Comparison"
-                  description="Compare your performance across selected interviews"
+                  title="面试能力对比"
+                  description="对比你在不同面试中的表现"
                 />
               ) : selectedInterviewIds.length >= 2 ? (
                 <Card>
                   <CardContent className="p-6 text-center text-muted-foreground">
                     <AlertCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>Loading comparison data...</p>
+                    <p>正在加载对比数据...</p>
                   </CardContent>
                 </Card>
               ) : null}
@@ -502,9 +502,9 @@ export default function DashboardPage() {
                 <Card>
                   <CardContent className="p-12 text-center">
                     <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                    <h3 className="text-lg font-semibold mb-2">No completed interviews</h3>
+                    <h3 className="text-lg font-semibold mb-2">没有已完成的面试</h3>
                     <p className="text-muted-foreground">
-                      Complete an interview to see detailed skill breakdowns
+                      完成面试后，这里会显示详细的能力拆解
                     </p>
                   </CardContent>
                 </Card>
@@ -544,7 +544,7 @@ function InterviewSkillBreakdown({ interviewId }: { interviewId: number }) {
       <Card>
         <CardContent className="p-6 text-center text-muted-foreground">
           <AlertCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-          <p>Skill breakdown not available for this interview.</p>
+          <p>这场面试暂时还没有能力拆解数据。</p>
         </CardContent>
       </Card>
     );

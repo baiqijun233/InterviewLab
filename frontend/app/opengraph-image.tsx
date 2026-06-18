@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'InterviewLab - AI-Powered Interview Preparation';
+export const alt = 'InterviewLab - 人工智能面试准备平台';
 export const size = {
   width: 1200,
   height: 630,
@@ -96,7 +96,7 @@ export default async function Image() {
                 margin: '10px 0 0 0',
               }}
             >
-              AI-Powered Interview Preparation
+              人工智能面试准备平台
             </p>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default async function Image() {
               }}
             />
             <span style={{ fontSize: '28px', color: 'rgba(255, 255, 255, 0.9)' }}>
-              Voice Practice Sessions
+              语音面试实战
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -133,7 +133,7 @@ export default async function Image() {
               }}
             />
             <span style={{ fontSize: '28px', color: 'rgba(255, 255, 255, 0.9)' }}>
-              Resume Analysis
+              简历分析
             </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -146,7 +146,7 @@ export default async function Image() {
               }}
             />
             <span style={{ fontSize: '28px', color: 'rgba(255, 255, 255, 0.9)' }}>
-              Live Code Practice
+              实时编程练习
             </span>
           </div>
         </div>

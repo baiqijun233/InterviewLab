@@ -48,7 +48,7 @@ export default function HomePage() {
             transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
             className="rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"
           />
-          <h1 className="text-2xl font-bold">Loading...</h1>
+          <h1 className="text-2xl font-bold">加载中...</h1>
         </div>
       </motion.div>
     );
@@ -61,29 +61,29 @@ export default function HomePage() {
   const features = [
     {
       icon: Mic,
-      title: 'Voice Practice Sessions',
-      description: 'Practice with AI-powered voice interviews that feel like the real thing. Get instant feedback on your communication skills.',
+      title: '语音面试实战',
+      description: '通过人工智能语音面试进行高仿真练习，立即获得沟通表达方面的反馈。',
       color: 'text-blue-600',
       bgColor: 'bg-blue-50 dark:bg-blue-950',
     },
     {
       icon: FileText,
-      title: 'Resume Analysis',
-      description: 'Upload your resume and get personalized interview questions based on your experience and skills.',
+      title: '简历分析',
+      description: '上传简历后，系统会根据你的经历和技能生成更贴合背景的面试问题。',
       color: 'text-green-600',
       bgColor: 'bg-green-50 dark:bg-green-950',
     },
     {
       icon: Code,
-      title: 'Live Code Practice',
-      description: 'Solve coding challenges in real-time with our interactive code editor. Get feedback on your solutions instantly.',
+      title: '实时编程练习',
+      description: '在交互式代码编辑器里完成编程题，并即时获得解题反馈。',
       color: 'text-purple-600',
       bgColor: 'bg-purple-50 dark:bg-purple-950',
     },
     {
       icon: TrendingUp,
-      title: 'Track Your Progress',
-      description: 'Monitor your improvement over time with detailed analytics and skill progression charts.',
+      title: '成长追踪',
+      description: '通过详细分析和能力趋势图，持续观察你的进步情况。',
       color: 'text-orange-600',
       bgColor: 'bg-orange-50 dark:bg-orange-950',
     },
@@ -92,32 +92,32 @@ export default function HomePage() {
   const steps = [
     {
       number: '01',
-      title: 'Upload Your Resume',
-      description: 'Share your resume and let our AI understand your background and experience.',
+      title: '上传简历',
+      description: '上传你的简历，让系统先理解你的背景、经历和技能重点。',
     },
     {
       number: '02',
-      title: 'Start Practice Session',
-      description: 'Begin a voice interview session tailored to your resume and career goals.',
+      title: '开始练习',
+      description: '开启一场结合简历背景和求职方向的面试练习。',
     },
     {
       number: '03',
-      title: 'Practice & Learn',
-      description: 'Answer questions, solve coding challenges, and receive real-time feedback.',
+      title: '边练边学',
+      description: '回答问题、完成编程题，并实时收到反馈。',
     },
     {
       number: '04',
-      title: 'Review & Improve',
-      description: 'Get comprehensive feedback and track your progress over time.',
+      title: '复盘提升',
+      description: '查看完整反馈，并持续追踪自己的提升过程。',
     },
   ];
 
   const benefits = [
-    'Unlimited practice sessions',
-    'Personalized interview questions',
-    'Real-time feedback and scoring',
-    'Progress tracking and analytics',
-    'No credit card required',
+    '不限次数练习',
+    '个性化面试问题',
+    '实时反馈与评分',
+    '进度追踪与分析',
+    '无需信用卡即可开始',
   ];
 
   const containerVariants = {
@@ -218,10 +218,10 @@ export default function HomePage() {
                 <span className="text-lg">🎨</span>
               </motion.div>
               <span className="text-sm font-semibold text-white">
-                Portfolio Project
+                作品集项目
               </span>
               <span className="text-xs text-amber-100">
-                (Not Commercial)
+                （非商用）
               </span>
             </div>
           </motion.div>
@@ -241,7 +241,7 @@ export default function HomePage() {
                 <Sparkles className="h-4 w-4 text-indigo-600" />
               </motion.div>
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                AI-Powered Interview Preparation
+                人工智能面试准备平台
               </span>
             </motion.div>
 
@@ -252,7 +252,7 @@ export default function HomePage() {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-gradient-to-r from-gray-900 via-indigo-700 to-gray-900 dark:from-white dark:via-indigo-300 dark:to-white bg-clip-text text-transparent"
             >
-              Ace Your Next Interview
+              拿下面试这一关
             </motion.h1>
 
             <motion.p
@@ -261,8 +261,8 @@ export default function HomePage() {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto"
             >
-              Practice with AI-powered voice interviews, get personalized feedback, and track your progress. 
-              Build confidence for your dream job.
+              通过人工智能语音面试练习，获取个性化反馈，并持续追踪进步。
+              为理想岗位建立更稳的自信。
             </motion.p>
 
             {/* CTA Buttons */}
@@ -282,7 +282,7 @@ export default function HomePage() {
                   asChild
                 >
                   <Link href="/register">
-                    Get Started Free
+                    免费开始体验
                     <motion.span
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
@@ -302,7 +302,7 @@ export default function HomePage() {
                   className="text-lg px-8 py-6 h-auto border-2"
                   asChild
                 >
-                  <Link href="/login">Sign In</Link>
+                  <Link href="/login">登录</Link>
                 </Button>
               </motion.div>
             </motion.div>
@@ -315,9 +315,9 @@ export default function HomePage() {
               className="grid grid-cols-3 gap-8 max-w-2xl mx-auto"
             >
               {[
-                { value: '10K+', label: 'Practice Sessions' },
-                { value: '95%', label: 'Success Rate' },
-                { value: '24/7', label: 'Available' },
+                { value: '10K+', label: '练习次数' },
+                { value: '95%', label: '通过信心' },
+                { value: '24/7', label: '随时可用' },
               ].map((stat, index) => (
                 <motion.div
                   key={index}
@@ -353,10 +353,10 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Everything You Need to Succeed
+              你需要的核心能力都在这里
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Powerful features designed to help you prepare for your next interview
+              一套围绕面试准备设计的核心功能，帮你更系统地进入状态
             </p>
           </motion.div>
 
@@ -406,10 +406,10 @@ export default function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              How It Works
+              使用流程
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Get started in minutes and start improving your interview skills today
+              几分钟就能上手，立刻开始打磨你的面试能力
             </p>
           </motion.div>
 
@@ -469,10 +469,10 @@ export default function HomePage() {
                       transition={{ duration: 0.6 }}
                     >
                       <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                        Why Choose InterviewLab?
+                        为什么选择 InterviewLab？
                       </h2>
                       <p className="text-xl text-muted-foreground mb-8">
-                        Join thousands of job seekers who are acing their interviews with our platform.
+                        和更多求职者一样，用同一套平台去练表达、练思路、练临场反应。
                       </p>
                       <motion.ul
                         variants={containerVariants}
@@ -526,9 +526,9 @@ export default function HomePage() {
                       >
                         <div className="space-y-4">
                           {[
-                            { icon: Users, color: 'text-indigo-600', label: 'Active Users', value: '10,000+' },
-                            { icon: BarChart3, color: 'text-blue-600', label: 'Success Rate', value: '95%' },
-                            { icon: Zap, color: 'text-orange-600', label: 'Response Time', value: '<1s' },
+                            { icon: Users, color: 'text-indigo-600', label: '活跃用户', value: '10,000+' },
+                            { icon: BarChart3, color: 'text-blue-600', label: '满意度', value: '95%' },
+                            { icon: Zap, color: 'text-orange-600', label: '响应速度', value: '<1秒' },
                           ].map((stat, index) => {
                             const Icon = stat.icon;
                             return (
@@ -579,7 +579,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              Ready to Ace Your Next Interview?
+              准备好迎接下一场面试了吗？
             </motion.h2>
             <motion.p
               className="text-xl text-indigo-100 mb-8"
@@ -588,7 +588,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              Join thousands of job seekers who are improving their interview skills with InterviewLab
+              用 InterviewLab 持续练习，把表达、思路和状态都提前打磨好
             </motion.p>
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -600,7 +600,7 @@ export default function HomePage() {
                 asChild
               >
                 <Link href="/register">
-                  Get Started Free
+                  免费开始体验
                   <motion.span
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -633,18 +633,18 @@ export default function HomePage() {
             <div className="flex gap-6 text-sm text-muted-foreground">
               <motion.div whileHover={{ scale: 1.1 }}>
                 <Link href="/login" className="hover:text-foreground transition-colors">
-                  Sign In
+                  登录
                 </Link>
               </motion.div>
               <motion.div whileHover={{ scale: 1.1 }}>
                 <Link href="/register" className="hover:text-foreground transition-colors">
-                  Sign Up
+                  注册
                 </Link>
               </motion.div>
             </div>
           </div>
           <div className="mt-8 text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} InterviewLab. All rights reserved.
+            © {new Date().getFullYear()} InterviewLab。保留所有权利。
           </div>
         </div>
       </motion.footer>

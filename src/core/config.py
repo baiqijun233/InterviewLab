@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str
     OPENAI_TTS_MODEL: str = "tts-1-hd"  # tts-1 or tts-1-hd (for text-to-speech) - using hd for more natural voice
     OPENAI_TTS_VOICE: str = "alloy"  # alloy, echo, fable, onyx, nova, shimmer
+    LOCAL_MOCK_AI: bool = False
 
     # LiveKit
     LIVEKIT_API_KEY: str = ""

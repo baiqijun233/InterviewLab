@@ -14,19 +14,18 @@ interface InterviewSkillCardProps {
 export function InterviewSkillCard({ breakdown, showRadar = true }: InterviewSkillCardProps) {
   const { skill_breakdown, interview_title, completed_at } = breakdown;
 
-  // Build radar chart data
   const radarData = [
-    { skill: 'Communication', score: Math.round(skill_breakdown.communication.score * 100) },
-    { skill: 'Technical', score: Math.round(skill_breakdown.technical.score * 100) },
-    { skill: 'Problem Solving', score: Math.round(skill_breakdown.problem_solving.score * 100) },
-    { skill: 'Code Quality', score: Math.round(skill_breakdown.code_quality.score * 100) },
+    { skill: '沟通表达', score: Math.round(skill_breakdown.communication.score * 100) },
+    { skill: '技术能力', score: Math.round(skill_breakdown.technical.score * 100) },
+    { skill: '问题解决', score: Math.round(skill_breakdown.problem_solving.score * 100) },
+    { skill: '代码质量', score: Math.round(skill_breakdown.code_quality.score * 100) },
   ];
 
   const skills = [
-    { key: 'communication' as const, label: 'Communication', icon: '💬' },
-    { key: 'technical' as const, label: 'Technical', icon: '💻' },
-    { key: 'problem_solving' as const, label: 'Problem Solving', icon: '🧩' },
-    { key: 'code_quality' as const, label: 'Code Quality', icon: '📝' },
+    { key: 'communication' as const, label: '沟通表达', icon: '💬' },
+    { key: 'technical' as const, label: '技术能力', icon: '🧠' },
+    { key: 'problem_solving' as const, label: '问题解决', icon: '🧩' },
+    { key: 'code_quality' as const, label: '代码质量', icon: '📝' },
   ];
 
   const getScoreColor = (score: number) => {
@@ -36,20 +35,19 @@ export function InterviewSkillCard({ breakdown, showRadar = true }: InterviewSki
   };
 
   const getScoreLabel = (score: number) => {
-    if (score >= 0.8) return 'Excellent';
-    if (score >= 0.6) return 'Good';
-    return 'Needs Improvement';
+    if (score >= 0.8) return '优秀';
+    if (score >= 0.6) return '良好';
+    return '待提升';
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <Card>
         <CardHeader>
           <CardTitle>{interview_title}</CardTitle>
           {completed_at && (
             <CardDescription>
-              Completed on {new Date(completed_at).toLocaleDateString('en-US', {
+              完成时间：{new Date(completed_at).toLocaleDateString('zh-CN', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
@@ -59,17 +57,15 @@ export function InterviewSkillCard({ breakdown, showRadar = true }: InterviewSki
         </CardHeader>
       </Card>
 
-      {/* Radar Chart */}
       {showRadar && (
         <SkillRadarChart
           data={radarData}
-          title="Skill Breakdown"
-          description="Performance across different skill areas"
+          title="能力拆解"
+          description="查看你在不同能力维度上的表现"
         />
       )}
 
-      {/* Detailed Breakdown per Skill */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {skills.map((skill) => {
           const skillData = skill_breakdown[skill.key];
           const score = skillData.score;
@@ -89,10 +85,9 @@ export function InterviewSkillCard({ breakdown, showRadar = true }: InterviewSki
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Score Bar */}
                 <div>
                   <div className="flex justify-between text-sm text-muted-foreground mb-1">
-                    <span>Score</span>
+                    <span>得分</span>
                     <span>{percentage}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
@@ -103,12 +98,11 @@ export function InterviewSkillCard({ breakdown, showRadar = true }: InterviewSki
                   </div>
                 </div>
 
-                {/* Strengths */}
                 {skillData.strengths && skillData.strengths.length > 0 && (
                   <div>
                     <div className="flex items-center space-x-2 mb-2">
                       <CheckCircle2 className="h-4 w-4 text-green-500" />
-                      <span className="font-semibold text-sm">Strengths</span>
+                      <span className="font-semibold text-sm">做得好的地方</span>
                     </div>
                     <ul className="space-y-1 ml-6">
                       {skillData.strengths.map((strength, idx) => (
@@ -120,12 +114,11 @@ export function InterviewSkillCard({ breakdown, showRadar = true }: InterviewSki
                   </div>
                 )}
 
-                {/* Weaknesses */}
                 {skillData.weaknesses && skillData.weaknesses.length > 0 && (
                   <div>
                     <div className="flex items-center space-x-2 mb-2">
                       <XCircle className="h-4 w-4 text-red-500" />
-                      <span className="font-semibold text-sm">Areas for Improvement</span>
+                      <span className="font-semibold text-sm">需要改进的地方</span>
                     </div>
                     <ul className="space-y-1 ml-6">
                       {skillData.weaknesses.map((weakness, idx) => (
@@ -137,12 +130,11 @@ export function InterviewSkillCard({ breakdown, showRadar = true }: InterviewSki
                   </div>
                 )}
 
-                {/* Recommendations */}
                 {skillData.recommendations && skillData.recommendations.length > 0 && (
                   <div>
                     <div className="flex items-center space-x-2 mb-2">
                       <Lightbulb className="h-4 w-4 text-yellow-500" />
-                      <span className="font-semibold text-sm">Recommendations</span>
+                      <span className="font-semibold text-sm">改进建议</span>
                     </div>
                     <ul className="space-y-1 ml-6">
                       {skillData.recommendations.map((rec, idx) => (
@@ -161,8 +153,3 @@ export function InterviewSkillCard({ breakdown, showRadar = true }: InterviewSki
     </div>
   );
 }
-
-
-
-
-

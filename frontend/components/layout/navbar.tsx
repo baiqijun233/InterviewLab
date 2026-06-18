@@ -25,9 +25,9 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Interviews', href: '/dashboard/interviews', icon: MessageSquare },
-  { name: 'Resumes', href: '/resumes', icon: FileText },
+  { name: '仪表盘', href: '/dashboard', icon: LayoutDashboard },
+  { name: '面试记录', href: '/dashboard/interviews', icon: MessageSquare },
+  { name: '简历', href: '/resumes', icon: FileText },
 ];
 
 export function Navbar() {
@@ -63,10 +63,10 @@ export function Navbar() {
               </a>
             </Button>
             <Button variant="ghost" asChild>
-              <Link href="/login">Sign In</Link>
+              <Link href="/login">登录</Link>
             </Button>
             <Button asChild>
-              <Link href="/register">Get Started</Link>
+              <Link href="/register">立即开始</Link>
             </Button>
           </div>
         </div>
@@ -134,20 +134,20 @@ export function Navbar() {
               <Avatar className="h-8 w-8">
                 <AvatarFallback>{getUserInitials()}</AvatarFallback>
               </Avatar>
-              <span className="hidden md:block text-sm font-medium">{user?.full_name || 'User'}</span>
+              <span className="hidden md:block text-sm font-medium">{user?.full_name || '用户'}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>我的账号</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              Profile
+              个人资料
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout} className="text-destructive">
               <LogOut className="mr-2 h-4 w-4" />
-              Log out
+              退出登录
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

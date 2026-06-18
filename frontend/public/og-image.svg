@@ -28,19 +28,19 @@
     
     <!-- Subtitle -->
     <text x="150" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="32" fill="white" opacity="0.9">
-      AI-Powered Interview Preparation
+      人工智能面试准备平台
     </text>
     
     <!-- Features -->
     <g transform="translate(150, 140)">
       <circle cx="0" cy="0" r="6" fill="white"/>
-      <text x="20" y="5" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="white" opacity="0.9">Voice Practice Sessions</text>
+      <text x="20" y="5" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="white" opacity="0.9">语音面试实战</text>
       
       <circle cx="0" cy="40" r="6" fill="white"/>
-      <text x="20" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="white" opacity="0.9">Resume Analysis</text>
+      <text x="20" y="45" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="white" opacity="0.9">简历分析</text>
       
       <circle cx="0" cy="80" r="6" fill="white"/>
-      <text x="20" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="white" opacity="0.9">Live Code Practice</text>
+      <text x="20" y="85" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="white" opacity="0.9">实时编程练习</text>
     </g>
   </g>
 </svg>

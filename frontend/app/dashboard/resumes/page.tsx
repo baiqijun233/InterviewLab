@@ -41,14 +41,14 @@ export default function ResumesPage() {
       return resumesApi.upload(file, (progress) => setUploadProgress(progress));
     },
     onSuccess: () => {
-      toast.success('Resume uploaded successfully!');
+      toast.success('简历上传成功');
       queryClient.invalidateQueries({ queryKey: ['resumes'] });
       setIsUploadOpen(false);
       setSelectedFile(null);
       setUploadProgress(0);
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to upload resume');
+      toast.error(error.message || '上传简历失败');
     },
   });
 
@@ -56,11 +56,11 @@ export default function ResumesPage() {
     const file = e.target.files?.[0];
     if (file) {
       if (file.type !== 'application/pdf') {
-        toast.error('Only PDF files are supported');
+        toast.error('当前只支持 PDF 文件');
         return;
       }
       if (file.size > 10 * 1024 * 1024) {
-        toast.error('File size must be less than 10MB');
+        toast.error('文件大小不能超过 10MB');
         return;
       }
       setSelectedFile(file);
@@ -75,13 +75,13 @@ export default function ResumesPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return <Badge variant="default" className="bg-green-500"><CheckCircle2 className="mr-1 h-3 w-3" />Completed</Badge>;
+        return <Badge variant="default" className="bg-green-500"><CheckCircle2 className="mr-1 h-3 w-3" />已完成</Badge>;
       case 'processing':
-        return <Badge variant="secondary"><Loader2 className="mr-1 h-3 w-3 animate-spin" />Processing</Badge>;
+        return <Badge variant="secondary"><Loader2 className="mr-1 h-3 w-3 animate-spin" />处理中</Badge>;
       case 'failed':
-        return <Badge variant="destructive"><XCircle className="mr-1 h-3 w-3" />Failed</Badge>;
+        return <Badge variant="destructive"><XCircle className="mr-1 h-3 w-3" />失败</Badge>;
       default:
-        return <Badge variant="outline"><AlertCircle className="mr-1 h-3 w-3" />Pending</Badge>;
+        return <Badge variant="outline"><AlertCircle className="mr-1 h-3 w-3" />待处理</Badge>;
     }
   };
 
@@ -97,16 +97,16 @@ export default function ResumesPage() {
       return resumesApi.delete(id);
     },
     onSuccess: () => {
-      toast.success('Resume deleted successfully!');
+      toast.success('简历删除成功');
       queryClient.invalidateQueries({ queryKey: ['resumes'] });
     },
     onError: (error: any) => {
-      toast.error(error.message || 'Failed to delete resume');
+      toast.error(error.message || '删除简历失败');
     },
   });
 
   const handleDelete = (id: number, fileName: string) => {
-    if (window.confirm(`Are you sure you want to delete "${fileName}"? This action cannot be undone.`)) {
+    if (window.confirm(`确认删除“${fileName}”吗？此操作无法撤销。`)) {
       deleteMutation.mutate(id);
     }
   };
@@ -115,28 +115,28 @@ export default function ResumesPage() {
     <div className="p-8">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Resumes</h1>
+          <h1 className="text-3xl font-bold tracking-tight">简历</h1>
           <p className="text-muted-foreground mt-2">
-            Upload and manage your resumes for personalized interview preparation
+            上传并管理简历，用于生成更个性化的面试练习
           </p>
         </div>
         <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
           <DialogTrigger asChild>
             <Button>
               <Upload className="mr-2 h-4 w-4" />
-              Upload Resume
+              上传简历
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Upload Resume</DialogTitle>
+              <DialogTitle>上传简历</DialogTitle>
               <DialogDescription>
-                Upload a PDF resume to get personalized interview questions
+                上传 PDF 简历，获取更贴合背景的面试问题
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="file">Select PDF File</Label>
+                <Label htmlFor="file">选择 PDF 文件</Label>
                 <Input
                   id="file"
                   type="file"
@@ -146,14 +146,14 @@ export default function ResumesPage() {
                 />
                 {selectedFile && (
                   <div className="text-sm text-muted-foreground">
-                    Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)
+                    已选择：{selectedFile.name}（{(selectedFile.size / 1024).toFixed(1)} KB）
                   </div>
                 )}
               </div>
               {uploadProgress > 0 && uploadProgress < 100 && (
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Uploading...</span>
+                    <span>上传中...</span>
                     <span>{uploadProgress}%</span>
                   </div>
                   <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -172,12 +172,12 @@ export default function ResumesPage() {
                 {uploadMutation.isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Uploading...
+                    上传中...
                   </>
                 ) : (
                   <>
                     <Upload className="mr-2 h-4 w-4" />
-                    Upload
+                    上传
                   </>
                 )}
               </Button>
@@ -223,7 +223,7 @@ export default function ResumesPage() {
                         asChild
                       >
                         <Link href={`/dashboard/resumes/${resume.id}`}>
-                          View Resume
+                          查看简历
                         </Link>
                       </Button>
                     )}
@@ -232,7 +232,7 @@ export default function ResumesPage() {
                       size="sm"
                       onClick={() => handleDelete(resume.id, resume.file_name)}
                       disabled={deleteMutation.isPending}
-                      title="Delete resume"
+                      title="删除简历"
                     >
                       {deleteMutation.isPending ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -250,13 +250,13 @@ export default function ResumesPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <FileText className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No resumes uploaded</h3>
+            <h3 className="text-lg font-semibold mb-2">还没有上传简历</h3>
             <p className="text-muted-foreground text-center mb-4">
-              Upload your first resume to get started with personalized interview preparation
+              上传第一份简历后，就可以开始个性化面试准备
             </p>
             <Button onClick={() => setIsUploadOpen(true)}>
               <Upload className="mr-2 h-4 w-4" />
-              Upload Resume
+              上传简历
             </Button>
           </CardContent>
         </Card>

@@ -133,10 +133,10 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <FileText className="h-4 w-4" />
-                  <span>Resume</span>
+                  <span>简历</span>
                 </div>
                 <Separator orientation="vertical" className="h-4" />
-                <span>Analyzed and Formatted</span>
+                <span>已完成解析与整理</span>
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <User className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Professional Summary</CardTitle>
+              <CardTitle className="text-xl">个人概述</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -166,7 +166,7 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <Code className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Skills & Technologies</CardTitle>
+              <CardTitle className="text-xl">技能与技术栈</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -187,7 +187,7 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <Briefcase className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Work Experience</CardTitle>
+              <CardTitle className="text-xl">工作经历</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -243,7 +243,7 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <Briefcase className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Work Experience</CardTitle>
+              <CardTitle className="text-xl">工作经历</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -262,7 +262,7 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <GraduationCap className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Education</CardTitle>
+              <CardTitle className="text-xl">教育经历</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -302,7 +302,7 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <GraduationCap className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Education</CardTitle>
+              <CardTitle className="text-xl">教育经历</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -319,7 +319,7 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <Code className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Projects</CardTitle>
+              <CardTitle className="text-xl">项目经历</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -338,7 +338,7 @@ export function ResumeDisplay({ resumeData, fileName }: ResumeDisplayProps) {
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <User className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Additional Information</CardTitle>
+              <CardTitle className="text-xl">补充信息</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
