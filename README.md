@@ -7,6 +7,7 @@
 用 FastAPI、Next.js 与 LangGraph 组织面试流程，连接简历上下文、在线编程、语音基础设施和结构化反馈。
 
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
+[![CI](https://github.com/baiqijun233/InterviewLab/actions/workflows/publish-image.yml/badge.svg)](https://github.com/baiqijun233/InterviewLab/actions/workflows/publish-image.yml)
 [![Frontend](https://img.shields.io/badge/Next.js-14%2B-111111?logo=nextdotjs&logoColor=white)](frontend/package.json)
 [![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](docker-compose.yml)
 [![Tests](https://img.shields.io/badge/tests-local%20mock%20validated-2ea44f)](#测试与验证)
