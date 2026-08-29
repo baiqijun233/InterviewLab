@@ -97,6 +97,15 @@ docker compose up -d --build
 
 Compose 需要按 `.env.example` 提供 OpenAI、LiveKit、数据库和 Redis 配置；未配置外部服务时，优先使用上面的本地 Mock 方式。
 
+## 容器镜像
+
+GHCR 镜像已通过 `v0.1.0` 工作流真实发布：
+
+```powershell
+docker pull ghcr.io/baiqijun233/interviewlab:0.1.0
+docker pull ghcr.io/baiqijun233/interviewlab:latest
+```
+
 ## 配置
 
 | 变量 | 作用 | 本地建议 |
