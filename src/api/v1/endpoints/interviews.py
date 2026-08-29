@@ -25,6 +25,8 @@ from src.services.orchestrator.langgraph_orchestrator import LangGraphInterviewO
 from src.services.data.state_manager import interview_to_state, state_to_interview
 from src.services.analysis.feedback_generator import FeedbackGenerator
 from src.services.analytics.analytics_service import InterviewAnalytics
+from src.services.analysis.code_analyzer import CodeAnalyzer
+from src.services.execution.sandbox_service import SandboxService, Language
 from src.services.voice.livekit_service import LiveKitService
 from src.api.v1.dependencies import get_current_user
 
@@ -294,7 +296,7 @@ async def complete_interview(
         interview.conversation_history = history
         interview.status = "completed"
         interview.completed_at = datetime.utcnow()
-        interview.feedback = _build_mock_feedback()
+        interview.feedback = _build_mock_feedback(interview.conversation_history)
 
         await db.commit()
         await db.refresh(interview)
@@ -378,6 +380,65 @@ async def submit_code_to_interview(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Interview is not in progress",
         )
+
+    if settings.LOCAL_MOCK_AI:
+        try:
+            language = Language(data.language.lower())
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Unsupported language: {data.language}",
+            )
+
+        sandbox_service = SandboxService()
+        execution_result = await sandbox_service.execute_code(
+            code=data.code,
+            language=language,
+        )
+
+        code_analyzer = CodeAnalyzer()
+        code_quality = await code_analyzer.analyze_code(
+            code=data.code,
+            language=data.language,
+            execution_result=execution_result.to_dict(),
+        )
+
+        history = list(interview.conversation_history or [])
+        history.append({
+            "role": "user",
+            "content": f"Submitted {data.language} code for review.",
+            "timestamp": datetime.utcnow().isoformat(),
+            "metadata": {
+                "type": "code_submission",
+                "code": data.code,
+                "language": data.language,
+                "execution_result": execution_result.to_dict(),
+                "code_quality": code_quality.model_dump(),
+            },
+        })
+        history.append({
+            "role": "assistant",
+            "content": (
+                "Mock interviewer: I reviewed your code submission. "
+                "Please explain your complexity tradeoffs and the edge cases you considered."
+            ),
+            "timestamp": datetime.utcnow().isoformat(),
+            "metadata": {
+                "type": "code_review",
+                "code": data.code,
+                "language": data.language,
+                "execution_result": execution_result.to_dict(),
+                "code_quality": code_quality.model_dump(),
+            },
+        })
+
+        interview.conversation_history = history
+        interview.turn_count = (interview.turn_count or 0) + 1
+
+        await db.commit()
+        await db.refresh(interview)
+
+        return _interview_to_response(interview)
 
     try:
         orchestrator = LangGraphInterviewOrchestrator()
@@ -820,8 +881,26 @@ def _interview_to_response(interview: Interview, state: dict | None = None) -> I
     )
 
 
-def _build_mock_feedback() -> dict:
+def _build_mock_feedback(conversation_history: list[dict] | None = None) -> dict:
     """Build deterministic feedback for local smoke tests without external AI."""
+    code_reviews = []
+    for message in conversation_history or []:
+        metadata = message.get("metadata", {})
+        if metadata.get("type") == "code_review":
+            code_reviews.append(metadata)
+
+    code_scores = [
+        review.get("code_quality", {}).get("quality_score")
+        for review in code_reviews
+        if isinstance(review.get("code_quality", {}).get("quality_score"), (int, float))
+    ]
+    average_code_quality = round(sum(code_scores) / len(code_scores), 2) if code_scores else 0.0
+
+    latest_code_quality = code_reviews[-1].get("code_quality", {}) if code_reviews else {}
+    code_strengths = latest_code_quality.get("strengths", []) if code_scores else []
+    code_weaknesses = latest_code_quality.get("weaknesses", []) if code_scores else []
+    code_suggestions = latest_code_quality.get("suggestions", []) if code_scores else []
+
     skill_breakdown = {
         "communication": {
             "score": 0.74,
@@ -842,19 +921,22 @@ def _build_mock_feedback() -> dict:
             "recommendations": ["State one primary metric and one guardrail metric"],
         },
         "code_quality": {
-            "score": 0.0,
-            "strengths": [],
-            "weaknesses": [],
-            "recommendations": [],
+            "score": average_code_quality,
+            "strengths": code_strengths,
+            "weaknesses": code_weaknesses,
+            "recommendations": code_suggestions,
         },
     }
 
     return {
-        "overall_score": 0.72,
+        "overall_score": round(
+            0.74 * 0.25 + 0.70 * 0.30 + 0.72 * 0.25 + average_code_quality * 0.20,
+            2,
+        ),
         "communication_score": 0.74,
         "technical_score": 0.70,
         "problem_solving_score": 0.72,
-        "code_quality_score": 0.0,
+        "code_quality_score": average_code_quality,
         "communication_feedback": skill_breakdown["communication"],
         "technical_feedback": skill_breakdown["technical"],
         "problem_solving_feedback": skill_breakdown["problem_solving"],
@@ -880,6 +962,6 @@ def _build_mock_feedback() -> dict:
             "Run the same flow with PostgreSQL before production deployment",
         ],
         "topics_covered": ["local mock interview flow"],
-        "code_submissions_count": 0,
-        "average_code_quality": 0.0,
+        "code_submissions_count": len(code_scores),
+        "average_code_quality": average_code_quality,
     }

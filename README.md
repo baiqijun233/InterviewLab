@@ -1,314 +1,159 @@
+<div align="center">
+
 # InterviewLab
 
-An AI-powered technical interview practice platform built with FastAPI, Next.js, LangGraph, and LiveKit.
+### AI 技术面试训练与反馈平台
 
-This repository is presented as a portfolio project: it combines real-time interview orchestration, voice interaction, live coding, resume-aware prompts, and structured feedback in one product-shaped system.
+用 FastAPI、Next.js 与 LangGraph 组织面试流程，连接简历上下文、在线编程、语音基础设施和结构化反馈。
 
-<div align="center">
-  <img src="frontend/public/landing-page.png" alt="InterviewLab landing page" width="100%"/>
-  <br/><br/>
-  <img src="frontend/public/interview.png" alt="Interview interface" width="100%"/>
-  <br/><br/>
-  <img src="frontend/public/resumes.png" alt="Resume analysis page" width="100%"/>
+[![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)](pyproject.toml)
+[![Frontend](https://img.shields.io/badge/Next.js-14%2B-111111?logo=nextdotjs&logoColor=white)](frontend/package.json)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)](docker-compose.yml)
+[![Tests](https://img.shields.io/badge/tests-local%20mock%20validated-2ea44f)](#测试与验证)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
+
+**注册登录 → 创建面试 → 回答与代码提交 → 完成面试 → 获取反馈**
+
 </div>
 
-## Portfolio Summary
+> InterviewLab 把一次技术面试拆成可恢复的状态流程，并提供本地 Mock AI 模式，让核心产品闭环在没有外部密钥时也能运行和验收。
 
-**Problem**
+## 快速导航
 
-Most interview prep tools are either static question banks or chat-only demos. They usually miss three things that make practice feel realistic:
+[项目预览](#项目预览) · [核心能力](#核心能力) · [架构](#架构) · [快速开始](#快速开始) · [配置](#配置) · [接口入口](#接口入口) · [测试与验证](#测试与验证) · [边界与路线图](#边界与路线图)
 
-- real interview flow control
-- voice-based interaction
-- structured feedback tied to both answers and coding performance
+## 项目预览
 
-**What this project does**
+<div align="center">
+  <img src="frontend/public/landing-page.png" alt="InterviewLab 首页" width="100%"/>
+  <br/><br/>
+  <img src="frontend/public/interview.png" alt="InterviewLab 面试界面" width="100%"/>
+  <br/><br/>
+  <img src="frontend/public/resumes.png" alt="InterviewLab 简历页面" width="100%"/>
+</div>
 
-InterviewLab simulates a technical interview workflow with:
+以上图片来自仓库内的实际界面素材；本地 Mock 流程验证记录见项目工作台和 `docs/LOCAL_DEVELOPMENT.md`。
 
-- AI-guided interview progression
-- voice interview infrastructure
-- live code execution in a sandbox
-- resume-based personalization
-- skill breakdown and feedback analytics
+## 项目定位
 
-**Why it is a strong portfolio piece**
+InterviewLab 面向技术面试训练场景，覆盖面试会话、简历关联、问题编排、在线代码提交和反馈分析。后端通过状态化编排区分问候、提问、追问、编码与收尾阶段；前端提供注册、Dashboard、面试详情、简历和分析页面。
 
-This project is not just a UI demo. It shows:
+## 核心能力
 
-- multi-service system design
-- backend orchestration with stateful interview flow
-- real-time interaction architecture
-- frontend product thinking
-- fallback design for missing external services
-- practical debugging and local validation work
+| 模块 | 能力 | 当前状态 |
+| --- | --- | --- |
+| 会话流程 | 创建、开始、回答、完成、反馈、技能拆解 | 本地 Mock 已验证 |
+| Agent 编排 | LangGraph 状态节点与上下文传递 | 代码已集成 |
+| 代码面试 | 代码提交、执行结果与质量分析 | 本地 Mock 已验证 |
+| 简历上下文 | 上传简历并关联面试 | 页面与接口已提供 |
+| 语音基础设施 | LiveKit 房间、STT/TTS、Agent 入会 | 需外部服务 |
+| 数据层 | SQLite 本地冒烟，PostgreSQL/Redis 生产配置 | 分层支持 |
 
----
-
-## What I Changed
-
-This repository started from the original InterviewLab codebase and was adapted into a more interview-ready, locally demonstrable portfolio project.
-
-### Key improvements
-
-1. **Repaired missing frontend foundation**
-   - Added missing frontend utility and API client modules under `frontend/lib/`
-   - Restored auth store, API wrappers, and shared helpers needed for the app to build and run
-
-2. **Added local mock interview validation flow**
-   - Introduced `LOCAL_MOCK_AI` to allow local end-to-end testing without a live OpenAI pipeline
-   - Added mock response and feedback behavior so the interview lifecycle can still be demonstrated
-   - Made it possible to validate the main product flow even when external AI services are unavailable
-
-3. **Localized the user-facing product UI**
-   - Converted the main user flows to Chinese for presentation and usability
-   - Updated landing page, auth pages, dashboard, interview views, resume views, analytics labels, sandbox UI, and metadata assets
-
-4. **Improved portfolio presentation**
-   - Reframed the project around product value, architecture, validation status, and demo flow
-   - Organized the repository so it is easier to explain in an interview setting
-
----
-
-## Demo Flow
-
-The most reliable demo path today is:
-
-1. Register or sign in
-2. Upload a resume
-3. Create an interview session
-4. Start the interview
-5. Submit a text response
-6. Continue through the mock interview loop
-7. Complete the interview
-8. Open feedback and skill breakdown views
-
-This gives a stable walkthrough of the core product experience without requiring every external production dependency to be live.
-
----
-
-## Architecture
+## 架构
 
 ```mermaid
-graph TB
-    subgraph Frontend
-        FE[Next.js React App]
-    end
-
-    subgraph Backend
-        API[FastAPI Server]
-        ORCH[LangGraph Orchestrator]
-    end
-
-    subgraph Voice
-        LK[LiveKit Server]
-        AGENT[LiveKit Agent]
-        TTS[OpenAI TTS]
-        STT[OpenAI STT]
-    end
-
-    subgraph Services
-        SB[Docker Sandbox]
-        LLM[OpenAI Model]
-        DB[PostgreSQL]
-        REDIS[Redis Cache]
-    end
-
-    FE -->|HTTP REST| API
-    FE -->|Realtime| LK
-    API -->|HTTP| LK
-    API -->|SQL| DB
-    API -->|Cache| REDIS
-    LK -->|WebSocket| AGENT
-    AGENT -->|LangGraph| ORCH
-    ORCH -->|API| LLM
-    ORCH -->|Docker| SB
-    AGENT -->|API| TTS
-    AGENT -->|API| STT
+flowchart LR
+    FE[Next.js 前端] --> API[FastAPI API]
+    API --> ORCH[LangGraph 面试编排]
+    ORCH --> LLM[OpenAI 兼容模型]
+    API --> DB[(SQLite / PostgreSQL)]
+    API --> REDIS[(Redis)]
+    API --> VOICE[LiveKit + STT/TTS]
+    API --> SB[Docker 代码沙箱]
 ```
 
-### Core components
+## 快速开始
 
-| Component | Technology | Responsibility |
+环境要求：Python 3.11+、Node.js 18+、npm；使用本地 Mock 模式不需要 OpenAI、LiveKit、PostgreSQL 或 Redis 服务。
+
+### 1. 启动后端（PowerShell）
+
+```powershell
+Set-Location E:\Agent\AIProjects\Project002_InterviewLab\02_Source\InterviewLab
+$env:LOCAL_MOCK_AI = "true"
+$env:DATABASE_URL = "sqlite+aiosqlite:///./local_dev_interviewlab.db"
+E:\Agent\AIProjects\Project002_InterviewLab\.venv\Scripts\python.exe -m uvicorn src.main:app --host 127.0.0.1 --port 8000
+```
+
+也可以直接执行仓库脚本：`./start_local_mock_backend.ps1`。健康检查：`http://127.0.0.1:8000/health`。
+
+### 2. 启动前端
+
+```powershell
+Set-Location E:\Agent\AIProjects\Project002_InterviewLab\02_Source\InterviewLab\frontend
+npm install
+npm run dev -- -p 3000
+```
+
+打开 `http://localhost:3000`，按“注册 → 创建面试 → 开始 → 文本回答 → 完成 → 反馈”体验主流程。
+
+### 3. Docker Compose（生产近似环境）
+
+```powershell
+Set-Location E:\Agent\AIProjects\Project002_InterviewLab\02_Source\InterviewLab
+docker compose config --quiet
+docker compose up -d --build
+```
+
+Compose 需要按 `.env.example` 提供 OpenAI、LiveKit、数据库和 Redis 配置；未配置外部服务时，优先使用上面的本地 Mock 方式。
+
+## 配置
+
+| 变量 | 作用 | 本地建议 |
 | --- | --- | --- |
-| Frontend | Next.js + React | Product UI, interview dashboard, resumes, analytics, live coding |
-| API Layer | FastAPI | Auth, interviews, resumes, voice, sandbox, analytics endpoints |
-| Orchestrator | LangGraph | Stateful interview flow, decisions, transitions, response generation |
-| Voice Agent | LiveKit Agents | Real-time voice interview interaction |
-| LLM Layer | OpenAI | Interview prompts, follow-ups, evaluation, feedback generation |
-| Sandbox | Docker | Isolated code execution |
-| Database | PostgreSQL / SQLite for local smoke flow | Persistence for interviews and related entities |
-| Cache / Session Layer | Redis | Runtime coordination and caching in full deployment |
+| `LOCAL_MOCK_AI` | 使用本地确定性面试与反馈 | `true` |
+| `DATABASE_URL` | 数据库连接串 | SQLite |
+| `OPENAI_API_KEY` | 真实模型调用 | 不写入仓库 |
+| `LIVEKIT_URL` | 语音房间地址 | 本地或目标环境 |
+| `REDIS_URL` | 缓存与任务协调 | 本地或目标环境 |
 
----
+## 接口入口
 
-## Technical Highlights
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/health` | 后端健康检查 |
+| POST | `/api/v1/auth/register` | 注册用户 |
+| POST | `/api/v1/auth/login` | 登录并获取令牌 |
+| POST | `/api/v1/interviews` | 创建面试 |
+| POST | `/api/v1/interviews/{id}/start` | 开始面试 |
+| POST | `/api/v1/interviews/{id}/respond` | 提交文本回答 |
+| POST | `/api/v1/interviews/{id}/complete` | 完成面试并生成反馈 |
+| GET | `/api/v1/interviews/{id}/feedback` | 查看反馈 |
 
-### 1. Stateful interview orchestration
+完整接口以 `docs/API.md` 和运行中的 OpenAPI 文档为准。
 
-The interview is not treated like a simple chatbot. LangGraph is used to manage phase transitions such as greeting, questioning, follow-up behavior, coding, and closing.
+## 测试与验证
 
-### 2. Voice-first product direction
+已验证内容：
 
-The system is designed around voice interaction through LiveKit, including room setup, speech handling, and AI agent participation.
+- Python 关键模块编译检查通过。
+- 前端 `npm run build` 通过。
+- 本地 Mock 链路：注册、登录、创建、开始、回答、完成、反馈、技能拆解。
+- 后端 `/health` 返回 `healthy`。
+- 首页、注册、Dashboard、面试列表和详情页面完成浏览器检查。
 
-### 3. Live coding workflow
+验证边界：真实 OpenAI 生成、LiveKit 语音房间、完整 Docker 沙箱、PostgreSQL/Redis 生产链路仍需目标服务和凭证，未将其写成已完成部署。
 
-The product includes a coding sandbox experience with editor, execution output, and interview-linked submission behavior.
-
-### 4. Resume-aware interview context
-
-Interview sessions can be connected to uploaded resumes so the product can personalize prompts and discussion areas.
-
-### 5. Practical fallback engineering
-
-A major portfolio strength here is not only the intended architecture, but also the ability to keep the project demonstrable when external services are incomplete.
-
----
-
-## Current Validation Status
-
-### Verified locally
-
-- frontend builds successfully in the main local workflow
-- backend health endpoint responds correctly
-- register / login / create interview / start / respond / complete flow works in local mock mode
-- feedback and skill breakdown endpoints return usable data in local validation mode
-- major user-facing pages were localized and browser-checked
-
-### Not fully validated yet in true production mode
-
-These parts depend on external infrastructure being available:
-
-- real OpenAI interview generation and scoring
-- LiveKit real-time voice room flow
-- Docker-isolated execution in full runtime conditions
-- PostgreSQL + Redis production-style persistence path
-
-That means the project is already strong as a portfolio system demo, while still having a clear roadmap for full production validation.
-
----
-
-## Interview Talking Points
-
-If you are reviewing this project in an interview, the strongest discussion areas are:
-
-- how the interview state machine is modeled
-- how frontend and backend responsibilities are split
-- how to make an AI product demonstrable before every external dependency is ready
-- how mock mode reduces integration risk while preserving product validation
-- how voice, orchestration, sandbox execution, and analytics fit together in one application
-
----
-
-## Project Structure
+## 项目结构
 
 ```text
-InterviewLab/
-├── src/                     # Backend application
-│   ├── agents/              # LiveKit agent logic
-│   ├── api/                 # REST API endpoints
-│   ├── core/                # Config, auth, database utilities
-│   ├── models/              # Database models
-│   ├── schemas/             # Validation schemas
-│   └── services/            # Orchestration, analysis, execution, analytics, voice
-├── frontend/                # Next.js application
-│   ├── app/                 # App routes
-│   ├── components/          # UI components
-│   ├── hooks/               # React hooks
-│   └── lib/                 # API clients, store, helpers
-├── docs/                    # Technical documentation
-├── alembic/                 # Database migrations
-├── docker-compose.yml       # Local service orchestration
-├── Dockerfile               # Backend image
-├── Dockerfile.agent         # Agent image
-└── pyproject.toml           # Python dependencies
+src/                  FastAPI 后端、Agent、服务与数据模型
+frontend/             Next.js 前端与页面素材
+docs/                 架构、API、语音与部署说明
+alembic/              数据库迁移
+Dockerfile            后端镜像
+Dockerfile.agent      语音 Agent 镜像
+docker-compose.yml    本地服务编排
 ```
 
----
+## 边界与路线图
 
-## Tech Stack
+当前仓库已具备可运行的本地产品闭环；仍需服务器适配的项目包括真实模型密钥管理、LiveKit/STT/TTS、生产 PostgreSQL 与 Redis、Docker 代码沙箱隔离、HTTPS 和监控告警。
 
-### Backend
+后续路线：补齐真实语音端到端验收、完善生产数据迁移与备份、增加 CI 测试矩阵，并持续清理前端构建警告。
 
-- FastAPI
-- Python 3.11+
-- LangGraph
-- SQLAlchemy
-- Alembic
-- OpenAI
-- LiveKit Agents
-- PostgreSQL
-- Redis
-- Docker
+## 贡献、许可证与安全
 
-### Frontend
+欢迎通过 Issue 反馈问题或提交 Pull Request。提交前请运行本地测试，不要提交 `.env`、访问令牌、API 密钥、数据库文件或生成缓存。安全问题请按仓库 `SECURITY.md` 的方式私下报告。
 
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- Zustand
-- TanStack Query
-- Monaco Editor
-- Framer Motion
-- LiveKit Client
-
----
-
-## Quick Start
-
-### Backend
-
-```bash
-python -m uvicorn src.main:app --host 127.0.0.1 --port 8000
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### Local portfolio demo mode
-
-For local validation without full external AI services, use the environment setup that enables:
-
-```env
-LOCAL_MOCK_AI=true
-DATABASE_URL=sqlite+aiosqlite:///./local_dev_interviewlab.db
-```
-
-This mode is intended for demonstration and smoke testing, not as a substitute for full production integration.
-
----
-
-## Full Production Validation Path
-
-To fully validate the intended architecture, the next steps are:
-
-1. disable `LOCAL_MOCK_AI`
-2. configure a real OpenAI API key
-3. connect a working LiveKit environment
-4. validate Docker sandbox execution end to end
-5. switch to PostgreSQL + Redis for production-style testing
-
----
-
-## Documentation
-
-- [Architecture](docs/ARCHITECTURE.md)
-- [API Reference](docs/API.md)
-- [Frontend Guide](docs/FRONTEND.md)
-- [Voice Infrastructure](docs/VOICE_INFRASTRUCTURE.md)
-- [LangGraph Notes](docs/LANGGRAPH.md)
-- [Local Development](docs/LOCAL_DEVELOPMENT.md)
-- [Deployment](docs/DEPLOYMENT.md)
-
----
-
-## License
-
-GNU General Public License v3.0
+本项目使用 [GNU GPL v3.0](LICENSE)。
